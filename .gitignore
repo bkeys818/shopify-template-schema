@@ -1,0 +1,8 @@
+node_modules
+dist
+
+# eslint
+.eslintcache
+
+# jest
+coverage
