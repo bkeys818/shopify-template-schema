@@ -39,20 +39,11 @@ export function createSettingSchema(setting: Setting): JSONSchema7 | undefined {
 
 export type Setting = SidebarSettings | InputSetting
 
-export interface SidebarSettings {
-    type: 'header' | 'paragraph'
-    content: string
-    id?: any // eslint-disable-line @typescript-eslint/no-explicit-any
-}
-
 // prettier-ignore
 export type InputSetting =  | CheckboxSettings | NumberSettings | RadioSettings | RangeSettings | SelectSettings | TextSettings | TextareaSettings | ArticleSettings | BlogSettings | CollectionSettings | CollectionListSettings | ColorSettings | ColorBackgroundSettings | FontPickerSettings | HtmlSettings | ImagePickerSettings | LinkListSettings | LiquidSettings | PageSettings | ProductSettings | ProductListSettings | RichtextSettings | UrlSettings | VideoUrlSettings
 
-// prettier-ignore
-type InputType = 'checkbox' | 'number' | 'radio' | 'range' | 'select' | 'text' | 'textarea' | 'article' | 'blog' | 'collection' | 'collection_list' | 'color' | 'color_background' | 'font_picker' | 'html' | 'image_picker' | 'link_list' | 'liquid' | 'page' | 'product' | 'product_list' | 'richtext' | 'url' | 'video_url'
-
 interface StandardInputSettings {
-    type: InputType
+    type: string
     id: string
     label: string
     default?: unknown
@@ -174,4 +165,10 @@ interface VideoUrlSettings extends StandardInputSettings {
     accept: Array<'youtube' | 'vimeo'>
     placeholder?: string
     default?: string
+}
+
+export interface SidebarSettings {
+    type: 'header' | 'paragraph'
+    content: string
+    id?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }

@@ -4,12 +4,9 @@ export type { Section }
 export type { Block } from './block'
 export type { Setting } from './settings'
 
-interface SectionFile {
-    fileName: string
-    schema: Section
-}
-
-export function createTemplateSchema(sections: SectionFile[]): JSONSchema7 {
+export function createTemplateSchema(
+    sections: Record<string, Section>
+): JSONSchema7 {
     return {
         type: 'object',
         properties: {
@@ -22,10 +19,11 @@ export function createTemplateSchema(sections: SectionFile[]): JSONSchema7 {
             sections: {
                 type: 'object',
                 additionalProperties:
-                    sections.length > 0
+                    Object.keys(sections).length > 0
                         ? {
-                              anyOf: sections.map(({ fileName, schema }) =>
-                                  createSectionSchema(fileName, schema)
+                              anyOf: Object.entries(sections).map(
+                                  ([fileName, schema]) =>
+                                      createSectionSchema(fileName, schema)
                               ),
                           }
                         : false,

@@ -3,11 +3,11 @@ import { createTemplateSchema, Section } from '.'
 const sectionType = 'example-section'
 const fileName = sectionType + '.liquid'
 const shopifySchema: Section = { name: 'Section Example' }
-const schema = createTemplateSchema([{ fileName, schema: shopifySchema }])
+const schema = createTemplateSchema({ [fileName]: shopifySchema })
 
 test('template with no sections', () => {
     expect(() => {
-        createTemplateSchema([])
+        createTemplateSchema({})
     }).not.toThrow()
 })
 
