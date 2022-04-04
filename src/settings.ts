@@ -1,8 +1,7 @@
 import type { JSONSchema7 } from 'json-schema'
 
-export function createSettingSchema(setting: Setting): JSONSchema7 | undefined {
-    if (setting.type == 'header' || setting.type == 'paragraph') return
-    else if (setting.type == 'checkbox') return { type: 'boolean' }
+export function createSettingSchema(setting: InputSetting): JSONSchema7 {
+    if (setting.type == 'checkbox') return { type: 'boolean' }
     else if (setting.type == 'number') return { type: 'number' }
     else if (setting.type == 'radio' || setting.type == 'select')
         return { type: 'string', enum: setting.options.map(obj => obj.value) }
@@ -14,27 +13,10 @@ export function createSettingSchema(setting: Setting): JSONSchema7 | undefined {
             multipleOf: setting.step,
         }
     else return { type: 'string' }
-    // else if (
-    //     settings.type == 'text' ||
-    //     settings.type == 'textarea' ||
-    //     settings.type == 'article' ||
-    //     settings.type == 'blog' ||
-    //     settings.type == 'collection' ||
-    //     settings.type == 'collection_list' ||
-    //     settings.type == 'color' ||
-    //     settings.type == 'color_background' ||
-    //     settings.type == 'font_picker' ||
-    //     settings.type == 'html' ||
-    //     settings.type == 'image_picker' ||
-    //     settings.type == 'link_list' ||
-    //     settings.type == 'liquid' ||
-    //     settings.type == 'page' ||
-    //     settings.type == 'product' ||
-    //     settings.type == 'product_list' ||
-    //     settings.type == 'richtext' ||
-    //     settings.type == 'url' ||
-    //     settings.type == 'video_url'
-    // )
+}
+
+export function isInputSetting(setting: Setting): setting is InputSetting {
+    return setting.type != 'header' && setting.type != 'paragraph'
 }
 
 export type Setting = SidebarSettings | InputSetting

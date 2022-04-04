@@ -73,16 +73,6 @@ export const shopifySchemas: {
     ],
 }
 
-describe(createSettingSchema, () => {
-    it('ignores sidebar settings', () => {
-        const sidebarTypes: SidebarSettings['type'][] = ['header', 'paragraph']
-        sidebarTypes.forEach(type => {
-            const schema = createSettingSchema({ type, content: 'text' })
-            expect(schema).toBeUndefined()
-        })
-    })
-})
-
 describe.each(Object.entries(shopifySchemas))(
     '%s schema',
     (_, [shopifySettingSchema, validValue, invalidValue]) => {

@@ -1,4 +1,4 @@
-import { createSettingSchema, type Setting } from './settings'
+import { createSettingSchema, isInputSetting, type Setting } from './settings'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createBlockSchema(block: Block): JSONSchema7 {
@@ -8,8 +8,8 @@ export function createBlockSchema(block: Block): JSONSchema7 {
     if (block.settings) {
         const settings: Record<string, JSONSchema7> = {}
         for (const setting of block.settings) {
-            const schema = createSettingSchema(setting)
-            if (schema) settings[setting.id] = schema
+            if (isInputSetting(setting))
+                settings[setting.id] = createSettingSchema(setting)
         }
         properties.settings = { type: ['object', 'null'], properties: settings }
     }
