@@ -1,42 +1,52 @@
-import { createSettingSchema, isInputSetting, type Setting } from './settings'
-import { createBlockSchema, type Block } from './block'
+import {
+    createSettingSchema,
+    isInputSetting,
+    type SettingShopifySchema,
+    type SettingJsonSchema,
+} from './setting'
+import {
+    createBlockSchema,
+    type BlockShopifySchema,
+    type BlockJsonSchema,
+} from './block'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createSectionSchema(
     fileName: string,
-    section: Section
-): JSONSchema7 {
-    const properties: Record<string, JSONSchema7> = {
+    section: SectionShopifySchema
+): SectionJsonSchema {
+    const properties: SectionJsonSchema['properties'] = {
         type: { const: fileName.slice(0, -7) },
         disabled: { type: 'boolean', default: true },
     }
 
     if (section.settings) {
-        const settings: Record<string, JSONSchema7> = {}
+        const settings: Record<string, SettingJsonSchema> = {}
         for (const setting of section.settings) {
             if (isInputSetting(setting))
                 settings[setting.id] = createSettingSchema(setting)
         }
-        properties.settings = { type: ['object', 'null'], properties: settings }
+        properties.settings = { type: 'object', properties: settings }
     }
 
     if (section.blocks) {
         properties.blocks = {
-            type: ['object'],
+            type: 'object',
             additionalProperties: {
                 anyOf: section.blocks.map(createBlockSchema),
             },
             maxProperties: section.max_blocks ?? 16,
         }
         properties.block_order = {
-            type: ['array'],
+            type: 'array',
             items: { type: 'string' },
             maxItems: section.max_blocks ?? 16,
             uniqueItems: true,
         }
     }
 
-    const schema: JSONSchema7 = {
+    const schema: SectionJsonSchema = {
+        type: 'object',
         properties,
         additionalProperties: false,
         required: ['type'],
@@ -49,16 +59,45 @@ export function createSectionSchema(
     return schema
 }
 
-export interface Section {
+export interface SectionShopifySchema {
     name: string
     tag?: 'article' | 'aside' | 'div' | 'footer' | 'header' | 'section'
     class?: string
     limit?: number
-    settings?: Setting[]
-    blocks?: Block[]
+    settings?: SettingShopifySchema[]
+    blocks?: BlockShopifySchema[]
     max_blocks?: number
     presets?: unknown
     default?: unknown
     locales?: unknown
     templates?: string[]
+}
+
+export interface SectionJsonSchema extends JSONSchema7 {
+    type: 'object'
+    properties: {
+        type: { const: string }
+        disabled: { type: 'boolean'; default: true }
+        settings?: {
+            type: 'object'
+            properties: Record<string, SettingJsonSchema>
+        }
+        blocks?: {
+            type: 'object'
+            additionalProperties: { anyOf: BlockJsonSchema[] }
+            maxProperties: number
+        }
+        block_order?: {
+            type: 'array'
+            items: { type: 'string' }
+            maxItems: number
+            uniqueItems: true
+        }
+    }
+    additionalProperties: false
+    required: ['type']
+    dependencies?: {
+        blocks: ['block_order']
+        block_order: ['blocks']
+    }
 }
