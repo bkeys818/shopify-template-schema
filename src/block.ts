@@ -6,17 +6,17 @@ import {
 } from './setting'
 import type { JSONSchema7 } from 'json-schema'
 
-export function createBlockSchema(block: BlockShopifySchema): JSONSchema7 {
-    const properties: Record<string, JSONSchema7> = {
+export function createBlockSchema(block: BlockShopifySchema): BlockJsonSchema {
+    const properties: BlockJsonSchema['properties'] = {
         type: { const: block.type },
     }
     if (block.settings) {
-        const settings: Record<string, JSONSchema7> = {}
+        const settings: Record<string, SettingJsonSchema> = {}
         for (const setting of block.settings) {
             if (isInputSetting(setting))
                 settings[setting.id] = createSettingSchema(setting)
         }
-        properties.settings = { type: ['object', 'null'], properties: settings }
+        properties.settings = { type: 'object', properties: settings }
     }
     return {
         type: 'object',

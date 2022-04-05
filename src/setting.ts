@@ -1,8 +1,6 @@
-import type { JSONSchema7 } from 'json-schema'
-
 export function createSettingSchema(
     setting: InputSettingShopifySchema
-): JSONSchema7 {
+): SettingJsonSchema {
     if (setting.type == 'checkbox') return { type: 'boolean' }
     else if (setting.type == 'number') return { type: 'number' }
     else if (setting.type == 'radio' || setting.type == 'select')

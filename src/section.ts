@@ -14,38 +14,39 @@ import type { JSONSchema7 } from 'json-schema'
 export function createSectionSchema(
     fileName: string,
     section: SectionShopifySchema
-): JSONSchema7 {
-    const properties: Record<string, JSONSchema7> = {
+): SectionJsonSchema {
+    const properties: SectionJsonSchema['properties'] = {
         type: { const: fileName.slice(0, -7) },
         disabled: { type: 'boolean', default: true },
     }
 
     if (section.settings) {
-        const settings: Record<string, JSONSchema7> = {}
+        const settings: Record<string, SettingJsonSchema> = {}
         for (const setting of section.settings) {
             if (isInputSetting(setting))
                 settings[setting.id] = createSettingSchema(setting)
         }
-        properties.settings = { type: ['object', 'null'], properties: settings }
+        properties.settings = { type: 'object', properties: settings }
     }
 
     if (section.blocks) {
         properties.blocks = {
-            type: ['object'],
+            type: 'object',
             additionalProperties: {
                 anyOf: section.blocks.map(createBlockSchema),
             },
             maxProperties: section.max_blocks ?? 16,
         }
         properties.block_order = {
-            type: ['array'],
+            type: 'array',
             items: { type: 'string' },
             maxItems: section.max_blocks ?? 16,
             uniqueItems: true,
         }
     }
 
-    const schema: JSONSchema7 = {
+    const schema: SectionJsonSchema = {
+        type: 'object',
         properties,
         additionalProperties: false,
         required: ['type'],

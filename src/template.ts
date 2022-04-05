@@ -7,7 +7,7 @@ import type { JSONSchema7 } from 'json-schema'
 
 export function createTemplateSchema(
     sections: Record<string, SectionShopifySchema>
-): JSONSchema7 {
+): TemplateJsonSchema {
     return {
         type: 'object',
         properties: {
