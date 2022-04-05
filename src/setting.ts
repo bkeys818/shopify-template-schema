@@ -160,3 +160,10 @@ export interface SidebarSettingShopifySchema {
     content: string
     id?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
+
+export type SettingJsonSchema =
+    | { type: 'boolean' }
+    | { type: 'number' }
+    | { type: 'number'; minimum: number; maximum: number; multipleOf: number }
+    | { type: 'string' }
+    | { type: 'string'; enum: string[] }

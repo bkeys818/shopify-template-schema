@@ -2,6 +2,7 @@ import {
     createSettingSchema,
     isInputSetting,
     type SettingShopifySchema,
+    type SettingJsonSchema,
 } from './setting'
 import type { JSONSchema7 } from 'json-schema'
 
@@ -30,4 +31,17 @@ export interface BlockShopifySchema {
     name: string
     limit?: number
     settings?: SettingShopifySchema[]
+}
+
+export interface BlockJsonSchema extends JSONSchema7 {
+    type: 'object'
+    properties: {
+        type: { const: string }
+        settings?: {
+            type: 'object'
+            properties: Record<string, SettingJsonSchema>
+        }
+    }
+    additionalProperties: false
+    required: ['type']
 }

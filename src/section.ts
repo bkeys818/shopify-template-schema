@@ -2,8 +2,13 @@ import {
     createSettingSchema,
     isInputSetting,
     type SettingShopifySchema,
+    type SettingJsonSchema,
 } from './setting'
-import { createBlockSchema, type BlockShopifySchema } from './block'
+import {
+    createBlockSchema,
+    type BlockShopifySchema,
+    type BlockJsonSchema,
+} from './block'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createSectionSchema(
@@ -65,4 +70,33 @@ export interface SectionShopifySchema {
     default?: unknown
     locales?: unknown
     templates?: string[]
+}
+
+export interface SectionJsonSchema extends JSONSchema7 {
+    type: 'object'
+    properties: {
+        type: { const: string }
+        disabled: { type: 'boolean'; default: true }
+        settings?: {
+            type: 'object'
+            properties: Record<string, SettingJsonSchema>
+        }
+        blocks?: {
+            type: 'object'
+            additionalProperties: { anyOf: BlockJsonSchema[] }
+            maxProperties: number
+        }
+        block_order?: {
+            type: 'array'
+            items: { type: 'string' }
+            maxItems: number
+            uniqueItems: true
+        }
+    }
+    additionalProperties: false
+    required: ['type']
+    dependencies?: {
+        blocks: ['block_order']
+        block_order: ['blocks']
+    }
 }
