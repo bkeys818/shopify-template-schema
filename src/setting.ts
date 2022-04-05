@@ -1,6 +1,8 @@
 import type { JSONSchema7 } from 'json-schema'
 
-export function createSettingSchema(setting: InputSetting): JSONSchema7 {
+export function createSettingSchema(
+    setting: InputSettingShopifySchema
+): JSONSchema7 {
     if (setting.type == 'checkbox') return { type: 'boolean' }
     else if (setting.type == 'number') return { type: 'number' }
     else if (setting.type == 'radio' || setting.type == 'select')
@@ -15,14 +17,18 @@ export function createSettingSchema(setting: InputSetting): JSONSchema7 {
     else return { type: 'string' }
 }
 
-export function isInputSetting(setting: Setting): setting is InputSetting {
+export function isInputSetting(
+    setting: SettingShopifySchema
+): setting is InputSettingShopifySchema {
     return setting.type != 'header' && setting.type != 'paragraph'
 }
 
-export type Setting = SidebarSetting | InputSetting
+export type SettingShopifySchema =
+    | SidebarSettingShopifySchema
+    | InputSettingShopifySchema
 
 // prettier-ignore
-export type InputSetting =  | CheckboxSetting | NumberSetting | RadioSetting | RangeSetting | SelectSetting | TextSetting | TextareaSetting | ArticleSetting | BlogSetting | CollectionSetting | CollectionListSetting | ColorSetting | ColorBackgroundSetting | FontPickerSetting | HtmlSetting | ImagePickerSetting | LinkListSetting | LiquidSetting | PageSetting | ProductSetting | ProductListSetting | RichtextSetting | UrlSetting | VideoUrlSetting
+export type InputSettingShopifySchema =  | CheckboxSetting | NumberSetting | RadioSetting | RangeSetting | SelectSetting | TextSetting | TextareaSetting | ArticleSetting | BlogSetting | CollectionSetting | CollectionListSetting | ColorSetting | ColorBackgroundSetting | FontPickerSetting | HtmlSetting | ImagePickerSetting | LinkListSetting | LiquidSetting | PageSetting | ProductSetting | ProductListSetting | RichtextSetting | UrlSetting | VideoUrlSetting
 
 interface StandardInputSetting {
     type: string
@@ -149,7 +155,7 @@ interface VideoUrlSetting extends StandardInputSetting {
     default?: string
 }
 
-export interface SidebarSetting {
+export interface SidebarSettingShopifySchema {
     type: 'header' | 'paragraph'
     content: string
     id?: any // eslint-disable-line @typescript-eslint/no-explicit-any

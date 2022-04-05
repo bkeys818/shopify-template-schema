@@ -1,21 +1,20 @@
 import {
     createSettingSchema,
-    Setting,
-    InputSetting,
-    SidebarSettings,
+    SettingShopifySchema,
+    InputSettingShopifySchema,
 } from './setting'
 import { validate } from 'json-schema'
 
-const defaultSettings = <T extends Setting['type']>(type: T) => ({
+const defaultSettings = <T extends SettingShopifySchema['type']>(type: T) => ({
     type,
     id: type + '-setting',
     label: type + '-setting',
 })
 
 export const shopifySchemas: {
-    [K in InputSetting['type']]: [
-        Extract<InputSetting, { type: K }>,
-        NonNullable<Extract<InputSetting, { type: K }>['default']>,
+    [K in InputSettingShopifySchema['type']]: [
+        Extract<InputSettingShopifySchema, { type: K }>,
+        NonNullable<Extract<InputSettingShopifySchema, { type: K }>['default']>,
         string | boolean | number
     ]
 } = {

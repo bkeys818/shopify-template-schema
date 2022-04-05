@@ -1,4 +1,4 @@
 export { createTemplateSchema } from './template'
-export { createSectionSchema, Section } from './section'
-export { createBlockSchema, Block } from './block'
-export { createSettingSchema, Setting } from './setting'
+export { createSectionSchema, SectionShopifySchema } from './section'
+export { createBlockSchema, BlockShopifySchema } from './block'
+export { createSettingSchema, SettingShopifySchema } from './setting'

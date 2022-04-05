@@ -1,7 +1,11 @@
-import { createSettingSchema, isInputSetting, type Setting } from './setting'
+import {
+    createSettingSchema,
+    isInputSetting,
+    type SettingShopifySchema,
+} from './setting'
 import type { JSONSchema7 } from 'json-schema'
 
-export function createBlockSchema(block: Block): JSONSchema7 {
+export function createBlockSchema(block: BlockShopifySchema): JSONSchema7 {
     const properties: Record<string, JSONSchema7> = {
         type: { const: block.type },
     }
@@ -21,9 +25,9 @@ export function createBlockSchema(block: Block): JSONSchema7 {
     }
 }
 
-export interface Block {
+export interface BlockShopifySchema {
     type: string
     name: string
     limit?: number
-    settings?: Setting[]
+    settings?: SettingShopifySchema[]
 }

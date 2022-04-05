@@ -1,8 +1,8 @@
-import { createSectionSchema, type Section } from './section'
+import { createSectionSchema, type SectionShopifySchema } from './section'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createTemplateSchema(
-    sections: Record<string, Section>
+    sections: Record<string, SectionShopifySchema>
 ): JSONSchema7 {
     return {
         type: 'object',

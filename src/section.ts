@@ -1,10 +1,14 @@
-import { createSettingSchema, isInputSetting, type Setting } from './setting'
-import { createBlockSchema, type Block } from './block'
+import {
+    createSettingSchema,
+    isInputSetting,
+    type SettingShopifySchema,
+} from './setting'
+import { createBlockSchema, type BlockShopifySchema } from './block'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createSectionSchema(
     fileName: string,
-    section: Section
+    section: SectionShopifySchema
 ): JSONSchema7 {
     const properties: Record<string, JSONSchema7> = {
         type: { const: fileName.slice(0, -7) },
@@ -49,13 +53,13 @@ export function createSectionSchema(
     return schema
 }
 
-export interface Section {
+export interface SectionShopifySchema {
     name: string
     tag?: 'article' | 'aside' | 'div' | 'footer' | 'header' | 'section'
     class?: string
     limit?: number
-    settings?: Setting[]
-    blocks?: Block[]
+    settings?: SettingShopifySchema[]
+    blocks?: BlockShopifySchema[]
     max_blocks?: number
     presets?: unknown
     default?: unknown
