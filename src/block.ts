@@ -1,4 +1,4 @@
-import { createSettingSchema, isInputSetting, type Setting } from './settings'
+import { createSettingSchema, isInputSetting, type Setting } from './setting'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createBlockSchema(block: Block): JSONSchema7 {

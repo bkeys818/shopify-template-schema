@@ -3,7 +3,7 @@ import {
     Setting,
     InputSetting,
     SidebarSettings,
-} from './settings'
+} from './setting'
 import { validate } from 'json-schema'
 
 const defaultSettings = <T extends Setting['type']>(type: T) => ({
