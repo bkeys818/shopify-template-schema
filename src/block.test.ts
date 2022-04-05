@@ -1,4 +1,4 @@
-import { createBlockSchema, BlockShopifySchema } from './block'
+import { createBlockSchema, BlockShopifySchema } from '.'
 
 const shopifySchema: BlockShopifySchema = {
     type: 'example-block',

@@ -1,5 +1,8 @@
-import { createSectionSchema, SectionShopifySchema } from './section'
-import type { BlockShopifySchema } from './block'
+import {
+    createSectionSchema,
+    SectionShopifySchema,
+    BlockShopifySchema,
+} from '.'
 
 const block = (type: string): BlockShopifySchema => ({
     type,

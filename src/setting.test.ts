@@ -1,8 +1,5 @@
-import {
-    createSettingSchema,
-    SettingShopifySchema,
-    InputSettingShopifySchema,
-} from './setting'
+import { createSettingSchema, SettingShopifySchema } from '.'
+import { InputSettingShopifySchema } from './setting'
 import { validate } from 'json-schema'
 
 const defaultSettings = <T extends SettingShopifySchema['type']>(type: T) => ({
