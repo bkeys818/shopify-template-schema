@@ -6,7 +6,7 @@ import {
 import type { JSONSchema7 } from 'json-schema'
 
 export function createTemplateSchema(
-    sections: Record<string, SectionShopifySchema>
+    sections: Record<string, SectionShopifySchema | undefined>
 ): TemplateJsonSchema {
     return {
         type: 'object',

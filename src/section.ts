@@ -13,14 +13,14 @@ import type { JSONSchema7 } from 'json-schema'
 
 export function createSectionSchema(
     fileName: string,
-    section: SectionShopifySchema
+    section?: SectionShopifySchema
 ): SectionJsonSchema {
     const properties: SectionJsonSchema['properties'] = {
         type: { const: fileName.slice(0, -7) },
         disabled: { type: 'boolean', default: true },
     }
 
-    if (section.settings) {
+    if (section?.settings) {
         const settings: Record<string, SettingJsonSchema> = {}
         for (const setting of section.settings) {
             if (isInputSetting(setting))
@@ -29,7 +29,7 @@ export function createSectionSchema(
         properties.settings = { type: 'object', properties: settings }
     }
 
-    if (section.blocks) {
+    if (section?.blocks) {
         properties.blocks = {
             type: 'object',
             additionalProperties: {
