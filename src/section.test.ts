@@ -21,6 +21,15 @@ const settings: SectionShopifySchema['settings'] = [
     { type: 'number', id: 'number-setting', label: 'number-label' },
 ]
 
+describe('Section with no schema', () => {
+    const schema = createSectionSchema(fileName)
+
+    it("requires 'type'", () => {
+        expect({ type: sectionType }).toMatchSchema(schema)
+        expect({}).not.toMatchSchema(schema)
+    })
+})
+
 describe('Basic section', () => {
     const schema = createSectionSchema(fileName, shopifySchema)
 
