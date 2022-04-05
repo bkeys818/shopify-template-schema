@@ -19,12 +19,12 @@ export function isInputSetting(setting: Setting): setting is InputSetting {
     return setting.type != 'header' && setting.type != 'paragraph'
 }
 
-export type Setting = SidebarSettings | InputSetting
+export type Setting = SidebarSetting | InputSetting
 
 // prettier-ignore
-export type InputSetting =  | CheckboxSettings | NumberSettings | RadioSettings | RangeSettings | SelectSettings | TextSettings | TextareaSettings | ArticleSettings | BlogSettings | CollectionSettings | CollectionListSettings | ColorSettings | ColorBackgroundSettings | FontPickerSettings | HtmlSettings | ImagePickerSettings | LinkListSettings | LiquidSettings | PageSettings | ProductSettings | ProductListSettings | RichtextSettings | UrlSettings | VideoUrlSettings
+export type InputSetting =  | CheckboxSetting | NumberSetting | RadioSetting | RangeSetting | SelectSetting | TextSetting | TextareaSetting | ArticleSetting | BlogSetting | CollectionSetting | CollectionListSetting | ColorSetting | ColorBackgroundSetting | FontPickerSetting | HtmlSetting | ImagePickerSetting | LinkListSetting | LiquidSetting | PageSetting | ProductSetting | ProductListSetting | RichtextSetting | UrlSetting | VideoUrlSetting
 
-interface StandardInputSettings {
+interface StandardInputSetting {
     type: string
     id: string
     label: string
@@ -32,23 +32,23 @@ interface StandardInputSettings {
     info?: string
 }
 
-interface CheckboxSettings extends StandardInputSettings {
+interface CheckboxSetting extends StandardInputSetting {
     type: 'checkbox'
     default?: boolean
 }
-interface NumberSettings extends StandardInputSettings {
+interface NumberSetting extends StandardInputSetting {
     type: 'number'
     default?: number
 }
-interface RadioSettings extends StandardInputSettings {
+interface RadioSetting extends StandardInputSetting {
     type: 'radio'
     options: Array<{
         value: string
         label: string
     }>
-    default?: RadioSettings['options'][number]['label']
+    default?: RadioSetting['options'][number]['label']
 }
-interface RangeSettings extends StandardInputSettings {
+interface RangeSetting extends StandardInputSetting {
     type: 'range'
     min: number
     max: number
@@ -56,100 +56,100 @@ interface RangeSettings extends StandardInputSettings {
     unit?: string
     default?: number
 }
-interface SelectSettings extends StandardInputSettings {
+interface SelectSetting extends StandardInputSetting {
     type: 'select'
     options: Array<{
         value: string
         label: string
     }>
-    default?: RadioSettings['options'][number]['label']
+    default?: RadioSetting['options'][number]['label']
 }
-interface TextSettings extends StandardInputSettings {
+interface TextSetting extends StandardInputSetting {
     type: 'text'
     placeholder?: string
     default?: string
 }
-interface TextareaSettings extends StandardInputSettings {
+interface TextareaSetting extends StandardInputSetting {
     type: 'textarea'
     placeholder?: string
     default?: string
 }
 
-interface ArticleSettings extends StandardInputSettings {
+interface ArticleSetting extends StandardInputSetting {
     type: 'article'
     default?: string
 }
-interface BlogSettings extends StandardInputSettings {
+interface BlogSetting extends StandardInputSetting {
     type: 'blog'
     default?: string
 }
-interface CollectionSettings extends StandardInputSettings {
+interface CollectionSetting extends StandardInputSetting {
     type: 'collection'
     default?: string
 }
-interface CollectionListSettings extends StandardInputSettings {
+interface CollectionListSetting extends StandardInputSetting {
     type: 'collection_list'
     limit?: number
     default?: string
 }
-interface ColorSettings extends StandardInputSettings {
+interface ColorSetting extends StandardInputSetting {
     type: 'color'
     default?: string
 }
-interface ColorBackgroundSettings extends StandardInputSettings {
+interface ColorBackgroundSetting extends StandardInputSetting {
     type: 'color_background'
     default?: string
 }
-interface FontPickerSettings extends StandardInputSettings {
+interface FontPickerSetting extends StandardInputSetting {
     type: 'font_picker'
     default?: string
 }
-interface HtmlSettings extends StandardInputSettings {
+interface HtmlSetting extends StandardInputSetting {
     type: 'html'
     placeholder?: 'string'
     default?: string
 }
-interface ImagePickerSettings extends StandardInputSettings {
+interface ImagePickerSetting extends StandardInputSetting {
     type: 'image_picker'
     default?: string
 }
-interface LinkListSettings extends StandardInputSettings {
+interface LinkListSetting extends StandardInputSetting {
     type: 'link_list'
     default?: string
 }
-interface LiquidSettings extends StandardInputSettings {
+interface LiquidSetting extends StandardInputSetting {
     type: 'liquid'
     default?: string
 }
-interface PageSettings extends StandardInputSettings {
+interface PageSetting extends StandardInputSetting {
     type: 'page'
     default?: string
 }
-interface ProductSettings extends StandardInputSettings {
+interface ProductSetting extends StandardInputSetting {
     type: 'product'
     default?: string
 }
-interface ProductListSettings extends StandardInputSettings {
+interface ProductListSetting extends StandardInputSetting {
     type: 'product_list'
     limit?: number
     default?: string
 }
-interface RichtextSettings extends StandardInputSettings {
+interface RichtextSetting extends StandardInputSetting {
     type: 'richtext'
     default?: string
 }
-interface UrlSettings extends StandardInputSettings {
+interface UrlSetting extends StandardInputSetting {
     type: 'url'
     default?: string
 }
-interface VideoUrlSettings extends StandardInputSettings {
+interface VideoUrlSetting extends StandardInputSetting {
     type: 'video_url'
     accept: Array<'youtube' | 'vimeo'>
     placeholder?: string
     default?: string
 }
 
-export interface SidebarSettings {
+export interface SidebarSetting {
     type: 'header' | 'paragraph'
     content: string
     id?: any // eslint-disable-line @typescript-eslint/no-explicit-any
