@@ -71,7 +71,7 @@ export const shopifySchemas: {
 describe.each(Object.entries(shopifySchemas))(
     '%s schema',
     (_, [shopifySettingSchema, validValue, invalidValue]) => {
-        const schema = jsonSchema.createSettingSchema(shopifySettingSchema)
+        const schema = jsonSchema.settingFrom(shopifySettingSchema)
         if (!schema) return
 
         it('accepts valid value', () => {

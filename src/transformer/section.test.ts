@@ -18,7 +18,7 @@ const settings: shopify.SectionSchema['settings'] = [
 ]
 
 describe('Section with no schema', () => {
-    const schema = jsonSchema.createSectionSchema(fileName)
+    const schema = jsonSchema.sectionFrom(fileName)
 
     it("requires 'type'", () => {
         expect({ type: sectionType }).toMatchSchema(schema)
@@ -27,7 +27,7 @@ describe('Section with no schema', () => {
 })
 
 describe('Basic section', () => {
-    const schema = jsonSchema.createSectionSchema(fileName, shopifySchema)
+    const schema = jsonSchema.sectionFrom(fileName, shopifySchema)
 
     it("requires 'type'", () => {
         expect({ type: sectionType }).toMatchSchema(schema)
@@ -41,7 +41,7 @@ describe('Basic section', () => {
 })
 
 describe('Section with settings', () => {
-    const schema = jsonSchema.createSectionSchema(fileName, {
+    const schema = jsonSchema.sectionFrom(fileName, {
         ...shopifySchema,
         settings,
     })
@@ -63,7 +63,7 @@ describe('Section with settings', () => {
 })
 
 describe('Section with blocks', () => {
-    const schema = jsonSchema.createSectionSchema(fileName, {
+    const schema = jsonSchema.sectionFrom(fileName, {
         ...shopifySchema,
         blocks,
     })
@@ -109,7 +109,7 @@ describe('Section with blocks', () => {
 
     it("custom 'max_blocks' limit", () => {
         const max_blocks = 15
-        const schema = jsonSchema.createSectionSchema(fileName, {
+        const schema = jsonSchema.sectionFrom(fileName, {
             ...shopifySchema,
             blocks,
             max_blocks,

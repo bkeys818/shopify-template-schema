@@ -3,11 +3,11 @@ import { jsonSchema, type shopify } from '..'
 const sectionType = 'example-section'
 const fileName = sectionType + '.liquid'
 const shopifySchema: shopify.SectionSchema = { name: 'Section Example' }
-const schema = jsonSchema.createTemplateSchema({ [fileName]: shopifySchema })
+const schema = jsonSchema.templateFrom({ [fileName]: shopifySchema })
 
 test('template with no sections', () => {
     expect(() => {
-        jsonSchema.createTemplateSchema({})
+        jsonSchema.templateFrom({})
     }).not.toThrow()
 })
 

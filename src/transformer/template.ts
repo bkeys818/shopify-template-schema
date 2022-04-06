@@ -1,9 +1,8 @@
-import { createSectionSchema, type SectionJsonSchema } from './section'
-import { shopify } from '..'
+import { jsonSchema, shopify } from '..'
 
-export function createTemplateSchema(
+export function templateFrom(
     sections: Record<string, shopify.SectionSchema | undefined>
-): TemplateJsonSchema {
+): Template {
     return {
         type: 'object',
         properties: {
@@ -20,7 +19,7 @@ export function createTemplateSchema(
                         ? {
                               anyOf: Object.entries(sections).map(
                                   ([fileName, schema]) =>
-                                      createSectionSchema(fileName, schema)
+                                      jsonSchema.sectionFrom(fileName, schema)
                               ),
                           }
                         : false,
@@ -38,7 +37,7 @@ export function createTemplateSchema(
     }
 }
 
-export interface TemplateJsonSchema {
+export interface Template {
     type: 'object'
     properties: {
         name: { type: 'string' }
@@ -49,7 +48,7 @@ export interface TemplateJsonSchema {
         wrapper: { type: 'string' }
         sections: {
             type: 'object'
-            additionalProperties: { anyOf: SectionJsonSchema[] } | false
+            additionalProperties: { anyOf: jsonSchema.Section[] } | false
             maxProperties: 20
         }
         order: {

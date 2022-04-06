@@ -1,23 +1,26 @@
-import type { shopify } from '..'
+import type { jsonSchema, shopify } from '..'
 
-export function createSettingSchema(
-    setting: shopify.InputSetting
-): SettingJsonSchema {
-    if (setting.type == 'checkbox') return { type: 'boolean' }
-    else if (setting.type == 'number') return { type: 'number' }
-    else if (setting.type == 'radio' || setting.type == 'select')
-        return { type: 'string', enum: setting.options.map(obj => obj.value) }
-    else if (setting.type == 'range')
+export function settingFrom(
+    shopifySetting: shopify.InputSetting
+): jsonSchema.Setting {
+    if (shopifySetting.type == 'checkbox') return { type: 'boolean' }
+    else if (shopifySetting.type == 'number') return { type: 'number' }
+    else if (shopifySetting.type == 'radio' || shopifySetting.type == 'select')
+        return {
+            type: 'string',
+            enum: shopifySetting.options.map(obj => obj.value),
+        }
+    else if (shopifySetting.type == 'range')
         return {
             type: 'number',
-            minimum: setting.min,
-            maximum: setting.max,
-            multipleOf: setting.step,
+            minimum: shopifySetting.min,
+            maximum: shopifySetting.max,
+            multipleOf: shopifySetting.step,
         }
     else return { type: 'string' }
 }
 
-export type SettingJsonSchema =
+export type Setting =
     | { type: 'boolean' }
     | { type: 'number' }
     | { type: 'number'; minimum: number; maximum: number; multipleOf: number }

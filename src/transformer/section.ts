@@ -1,42 +1,40 @@
-import { createSettingSchema, type SettingJsonSchema } from './setting'
-import { createBlockSchema, type BlockJsonSchema } from './block'
-import { shopify } from '..'
+import { jsonSchema, shopify } from '..'
 
-export function createSectionSchema(
+export function sectionFrom(
     fileName: string,
-    section?: shopify.SectionSchema
-): SectionJsonSchema {
-    const properties: SectionJsonSchema['properties'] = {
+    shopifySection?: shopify.SectionSchema
+): jsonSchema.Section {
+    const properties: Section['properties'] = {
         type: { const: fileName.slice(0, -7) },
         disabled: { type: 'boolean', default: true },
     }
 
-    if (section?.settings) {
-        const settings: Record<string, SettingJsonSchema> = {}
-        for (const setting of section.settings) {
+    if (shopifySection?.settings) {
+        const settings: Record<string, jsonSchema.Setting> = {}
+        for (const setting of shopifySection.settings) {
             if (shopify.isInputSetting(setting))
-                settings[setting.id] = createSettingSchema(setting)
+                settings[setting.id] = jsonSchema.settingFrom(setting)
         }
         properties.settings = { type: 'object', properties: settings }
     }
 
-    if (section?.blocks) {
+    if (shopifySection?.blocks) {
         properties.blocks = {
             type: 'object',
             additionalProperties: {
-                anyOf: section.blocks.map(createBlockSchema),
+                anyOf: shopifySection.blocks.map(jsonSchema.blockFrom),
             },
-            maxProperties: section.max_blocks ?? 16,
+            maxProperties: shopifySection.max_blocks ?? 16,
         }
         properties.block_order = {
             type: 'array',
             items: { type: 'string' },
-            maxItems: section.max_blocks ?? 16,
+            maxItems: shopifySection.max_blocks ?? 16,
             uniqueItems: true,
         }
     }
 
-    const schema: SectionJsonSchema = {
+    const schema: Section = {
         type: 'object',
         properties,
         additionalProperties: false,
@@ -50,18 +48,18 @@ export function createSectionSchema(
     return schema
 }
 
-export interface SectionJsonSchema {
+export interface Section {
     type: 'object'
     properties: {
         type: { const: string }
         disabled: { type: 'boolean'; default: true }
         settings?: {
             type: 'object'
-            properties: Record<string, SettingJsonSchema>
+            properties: Record<string, jsonSchema.Setting>
         }
         blocks?: {
             type: 'object'
-            additionalProperties: { anyOf: BlockJsonSchema[] }
+            additionalProperties: { anyOf: jsonSchema.Block[] }
             maxProperties: number
         }
         block_order?: {

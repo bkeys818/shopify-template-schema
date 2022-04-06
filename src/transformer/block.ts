@@ -1,15 +1,14 @@
-import { createSettingSchema, type SettingJsonSchema } from './setting'
-import { shopify } from '..'
+import { jsonSchema, shopify } from '..'
 
-export function createBlockSchema(block: shopify.BlockSchema): BlockJsonSchema {
-    const properties: BlockJsonSchema['properties'] = {
-        type: { const: block.type },
+export function blockFrom(shopifyBlock: shopify.BlockSchema): jsonSchema.Block {
+    const properties: Block['properties'] = {
+        type: { const: shopifyBlock.type },
     }
-    if (block.settings) {
-        const settings: Record<string, SettingJsonSchema> = {}
-        for (const setting of block.settings) {
+    if (shopifyBlock.settings) {
+        const settings: Record<string, jsonSchema.Setting> = {}
+        for (const setting of shopifyBlock.settings) {
             if (shopify.isInputSetting(setting))
-                settings[setting.id] = createSettingSchema(setting)
+                settings[setting.id] = jsonSchema.settingFrom(setting)
         }
         properties.settings = { type: 'object', properties: settings }
     }
@@ -21,13 +20,13 @@ export function createBlockSchema(block: shopify.BlockSchema): BlockJsonSchema {
     }
 }
 
-export interface BlockJsonSchema {
+export interface Block {
     type: 'object'
     properties: {
         type: { const: string }
         settings?: {
             type: 'object'
-            properties: Record<string, SettingJsonSchema>
+            properties: Record<string, jsonSchema.Setting>
         }
     }
     additionalProperties: false
