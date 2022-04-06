@@ -74,10 +74,6 @@ describe.each(Object.entries(shopifySchemas))(
         const schema = jsonSchema.createSettingSchema(shopifySettingSchema)
         if (!schema) return
 
-        it('is valid', () => {
-            expect(validate(schema, {}).valid).toBeTruthy()
-        })
-
         it('accepts valid value', () => {
             expect(validValue).toMatchSchema(schema)
         })

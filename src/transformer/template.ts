@@ -1,6 +1,5 @@
 import { createSectionSchema, type SectionJsonSchema } from './section'
 import { shopify } from '..'
-import type { JSONSchema7 } from 'json-schema'
 
 export function createTemplateSchema(
     sections: Record<string, shopify.SectionSchema | undefined>
@@ -39,7 +38,7 @@ export function createTemplateSchema(
     }
 }
 
-export interface TemplateJsonSchema extends JSONSchema7 {
+export interface TemplateJsonSchema {
     type: 'object'
     properties: {
         name: { type: 'string' }

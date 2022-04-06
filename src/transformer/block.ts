@@ -1,6 +1,5 @@
 import { createSettingSchema, type SettingJsonSchema } from './setting'
 import { shopify } from '..'
-import type { JSONSchema7 } from 'json-schema'
 
 export function createBlockSchema(block: shopify.BlockSchema): BlockJsonSchema {
     const properties: BlockJsonSchema['properties'] = {
@@ -22,7 +21,7 @@ export function createBlockSchema(block: shopify.BlockSchema): BlockJsonSchema {
     }
 }
 
-export interface BlockJsonSchema extends JSONSchema7 {
+export interface BlockJsonSchema {
     type: 'object'
     properties: {
         type: { const: string }
