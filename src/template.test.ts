@@ -1,8 +1,8 @@
-import { createTemplateSchema, SectionShopifySchema } from '.'
+import { createTemplateSchema, type shopify } from '.'
 
 const sectionType = 'example-section'
 const fileName = sectionType + '.liquid'
-const shopifySchema: SectionShopifySchema = { name: 'Section Example' }
+const shopifySchema: shopify.SectionSchema = { name: 'Section Example' }
 const schema = createTemplateSchema({ [fileName]: shopifySchema })
 
 test('template with no sections', () => {

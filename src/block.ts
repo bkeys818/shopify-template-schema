@@ -1,19 +1,15 @@
-import {
-    createSettingSchema,
-    isInputSetting,
-    type SettingShopifySchema,
-    type SettingJsonSchema,
-} from './setting'
+import { createSettingSchema, type SettingJsonSchema } from './setting'
+import { shopify } from '.'
 import type { JSONSchema7 } from 'json-schema'
 
-export function createBlockSchema(block: BlockShopifySchema): BlockJsonSchema {
+export function createBlockSchema(block: shopify.BlockSchema): BlockJsonSchema {
     const properties: BlockJsonSchema['properties'] = {
         type: { const: block.type },
     }
     if (block.settings) {
         const settings: Record<string, SettingJsonSchema> = {}
         for (const setting of block.settings) {
-            if (isInputSetting(setting))
+            if (shopify.isInputSetting(setting))
                 settings[setting.id] = createSettingSchema(setting)
         }
         properties.settings = { type: 'object', properties: settings }
@@ -24,13 +20,6 @@ export function createBlockSchema(block: BlockShopifySchema): BlockJsonSchema {
         additionalProperties: false,
         required: ['type'],
     }
-}
-
-export interface BlockShopifySchema {
-    type: string
-    name: string
-    limit?: number
-    settings?: SettingShopifySchema[]
 }
 
 export interface BlockJsonSchema extends JSONSchema7 {

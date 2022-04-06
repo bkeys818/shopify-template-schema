@@ -1,12 +1,5 @@
+export * as shopify from './shopify'
 export { createTemplateSchema, TemplateJsonSchema } from './template'
-export {
-    createSectionSchema,
-    SectionShopifySchema,
-    SectionJsonSchema,
-} from './section'
-export { createBlockSchema, BlockShopifySchema, BlockJsonSchema } from './block'
-export {
-    createSettingSchema,
-    SettingShopifySchema,
-    SettingJsonSchema,
-} from './setting'
+export { createSectionSchema, SectionJsonSchema } from './section'
+export { createBlockSchema, BlockJsonSchema } from './block'
+export { createSettingSchema, SettingJsonSchema } from './setting'

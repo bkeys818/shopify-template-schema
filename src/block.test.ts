@@ -1,11 +1,11 @@
-import { createBlockSchema, BlockShopifySchema } from '.'
+import { createBlockSchema, type shopify } from '.'
 
-const shopifySchema: BlockShopifySchema = {
+const shopifySchema: shopify.BlockSchema = {
     type: 'example-block',
     name: 'Example Block',
 }
 
-const settings: BlockShopifySchema['settings'] = [
+const settings: shopify.BlockSchema['settings'] = [
     { type: 'number', id: 'number-setting', label: 'number-setting' },
 ]
 

@@ -1,23 +1,19 @@
-import {
-    createSectionSchema,
-    SectionShopifySchema,
-    BlockShopifySchema,
-} from '.'
+import { createSectionSchema, type shopify } from '.'
 
-const block = (type: string): BlockShopifySchema => ({
+const block = (type: string): shopify.BlockSchema => ({
     type,
     name: type + ' block',
 })
 
 const sectionType = 'example-section'
 const fileName = sectionType + '.liquid'
-const shopifySchema: SectionShopifySchema = { name: 'Section Example' }
-const blocks: NonNullable<SectionShopifySchema['blocks']> = [
+const shopifySchema: shopify.SectionSchema = { name: 'Section Example' }
+const blocks: NonNullable<shopify.SectionSchema['blocks']> = [
     block('one'),
     block('two'),
     block('three'),
 ]
-const settings: SectionShopifySchema['settings'] = [
+const settings: shopify.SectionSchema['settings'] = [
     { type: 'number', id: 'number-setting', label: 'number-label' },
 ]
 

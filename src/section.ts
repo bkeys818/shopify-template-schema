@@ -1,19 +1,11 @@
-import {
-    createSettingSchema,
-    isInputSetting,
-    type SettingShopifySchema,
-    type SettingJsonSchema,
-} from './setting'
-import {
-    createBlockSchema,
-    type BlockShopifySchema,
-    type BlockJsonSchema,
-} from './block'
+import { createSettingSchema, type SettingJsonSchema } from './setting'
+import { createBlockSchema, type BlockJsonSchema } from './block'
+import { shopify } from '.'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createSectionSchema(
     fileName: string,
-    section?: SectionShopifySchema
+    section?: shopify.SectionSchema
 ): SectionJsonSchema {
     const properties: SectionJsonSchema['properties'] = {
         type: { const: fileName.slice(0, -7) },
@@ -23,7 +15,7 @@ export function createSectionSchema(
     if (section?.settings) {
         const settings: Record<string, SettingJsonSchema> = {}
         for (const setting of section.settings) {
-            if (isInputSetting(setting))
+            if (shopify.isInputSetting(setting))
                 settings[setting.id] = createSettingSchema(setting)
         }
         properties.settings = { type: 'object', properties: settings }
@@ -57,20 +49,6 @@ export function createSectionSchema(
             block_order: ['blocks'],
         }
     return schema
-}
-
-export interface SectionShopifySchema {
-    name: string
-    tag?: 'article' | 'aside' | 'div' | 'footer' | 'header' | 'section'
-    class?: string
-    limit?: number
-    settings?: SettingShopifySchema[]
-    blocks?: BlockShopifySchema[]
-    max_blocks?: number
-    presets?: unknown
-    default?: unknown
-    locales?: unknown
-    templates?: string[]
 }
 
 export interface SectionJsonSchema extends JSONSchema7 {
