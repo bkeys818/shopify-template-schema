@@ -1,6 +1,6 @@
 import { createSettingSchema, type SettingJsonSchema } from './setting'
 import { createBlockSchema, type BlockJsonSchema } from './block'
-import { shopify } from '.'
+import { shopify } from '..'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createSectionSchema(

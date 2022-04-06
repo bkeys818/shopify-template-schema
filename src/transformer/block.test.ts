@@ -1,4 +1,4 @@
-import { createBlockSchema, type shopify } from '.'
+import { jsonSchema, type shopify } from '..'
 
 const shopifySchema: shopify.BlockSchema = {
     type: 'example-block',
@@ -12,7 +12,7 @@ const settings: shopify.BlockSchema['settings'] = [
 const validValue = { type: shopifySchema.type }
 
 describe('Basic block', () => {
-    const schema = createBlockSchema({ ...shopifySchema })
+    const schema = jsonSchema.createBlockSchema({ ...shopifySchema })
 
     it("requires 'type'", () => {
         expect(validValue).toMatchSchema(schema)
@@ -25,7 +25,7 @@ describe('Basic block', () => {
 })
 
 describe('Block with settings', () => {
-    const schema = createBlockSchema({ ...shopifySchema, settings })
+    const schema = jsonSchema.createBlockSchema({ ...shopifySchema, settings })
 
     it("accepts 'settings'", () => {
         expect({

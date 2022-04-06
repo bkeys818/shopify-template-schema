@@ -1,4 +1,4 @@
-import { createSettingSchema, type shopify } from '.'
+import { jsonSchema, type shopify } from '..'
 import { validate } from 'json-schema'
 
 const defaultSettings = <T extends shopify.Setting['type']>(type: T) => ({
@@ -71,7 +71,7 @@ export const shopifySchemas: {
 describe.each(Object.entries(shopifySchemas))(
     '%s schema',
     (_, [shopifySettingSchema, validValue, invalidValue]) => {
-        const schema = createSettingSchema(shopifySettingSchema)
+        const schema = jsonSchema.createSettingSchema(shopifySettingSchema)
         if (!schema) return
 
         it('is valid', () => {

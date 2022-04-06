@@ -1,4 +1,4 @@
-import { createSectionSchema, type shopify } from '.'
+import { jsonSchema, type shopify } from '..'
 
 const block = (type: string): shopify.BlockSchema => ({
     type,
@@ -18,7 +18,7 @@ const settings: shopify.SectionSchema['settings'] = [
 ]
 
 describe('Section with no schema', () => {
-    const schema = createSectionSchema(fileName)
+    const schema = jsonSchema.createSectionSchema(fileName)
 
     it("requires 'type'", () => {
         expect({ type: sectionType }).toMatchSchema(schema)
@@ -27,7 +27,7 @@ describe('Section with no schema', () => {
 })
 
 describe('Basic section', () => {
-    const schema = createSectionSchema(fileName, shopifySchema)
+    const schema = jsonSchema.createSectionSchema(fileName, shopifySchema)
 
     it("requires 'type'", () => {
         expect({ type: sectionType }).toMatchSchema(schema)
@@ -41,7 +41,10 @@ describe('Basic section', () => {
 })
 
 describe('Section with settings', () => {
-    const schema = createSectionSchema(fileName, { ...shopifySchema, settings })
+    const schema = jsonSchema.createSectionSchema(fileName, {
+        ...shopifySchema,
+        settings,
+    })
 
     it("accepts 'settings'", () => {
         expect({
@@ -60,7 +63,10 @@ describe('Section with settings', () => {
 })
 
 describe('Section with blocks', () => {
-    const schema = createSectionSchema(fileName, { ...shopifySchema, blocks })
+    const schema = jsonSchema.createSectionSchema(fileName, {
+        ...shopifySchema,
+        blocks,
+    })
 
     it("accepts only 'blocks' and 'block_order' together", () => {
         const validValue = {
@@ -103,7 +109,7 @@ describe('Section with blocks', () => {
 
     it("custom 'max_blocks' limit", () => {
         const max_blocks = 15
-        const schema = createSectionSchema(fileName, {
+        const schema = jsonSchema.createSectionSchema(fileName, {
             ...shopifySchema,
             blocks,
             max_blocks,

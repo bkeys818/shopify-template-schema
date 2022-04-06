@@ -1,4 +1,4 @@
-import type { shopify } from '.'
+import type { shopify } from '..'
 
 export function createSettingSchema(
     setting: shopify.InputSetting

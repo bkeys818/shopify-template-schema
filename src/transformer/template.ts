@@ -1,5 +1,5 @@
 import { createSectionSchema, type SectionJsonSchema } from './section'
-import { shopify } from '.'
+import { shopify } from '..'
 import type { JSONSchema7 } from 'json-schema'
 
 export function createTemplateSchema(
