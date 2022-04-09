@@ -9,7 +9,8 @@
     ],
     "scripts": {
         "prepare": "husky install",
-        "build": "rimraf dist && tsc -p src/tsconfig.json",
+        "prebuild": "rimraf dist",
+        "build": "tsc -p src/tsconfig.json",
         "test": "jest --coverage"
     },
     "keywords": [
