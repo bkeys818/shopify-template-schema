@@ -5,7 +5,7 @@ export function sectionFrom(
     shopifySection?: shopify.SectionSchema
 ): jsonSchema.Section {
     const properties: Section['properties'] = {
-        type: { const: fileName.slice(0, -7) },
+        type: { const: makeTypeFrom(fileName) },
         disabled: { type: 'boolean', default: true },
     }
 
@@ -46,6 +46,12 @@ export function sectionFrom(
             block_order: ['blocks'],
         }
     return schema
+}
+
+export function makeTypeFrom(file: string) {
+    const start = file.lastIndexOf('/')
+    const end = file.lastIndexOf('.')
+    return file.slice(start === -1 ? 0 : start + 1, end)
 }
 
 export interface Section {
