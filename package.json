@@ -8,6 +8,7 @@
         "dist/**/*.d.ts",
         "bin/**/*.js"
     ],
+    "bin": "bin/cli.js",
     "scripts": {
         "prepare": "husky install",
         "prebuild": "rimraf dist",
