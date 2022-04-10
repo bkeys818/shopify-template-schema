@@ -5,12 +5,13 @@
     "main": "./dist/index.js",
     "files": [
         "dist/**/*.js",
-        "dist/**/*.d.ts"
+        "dist/**/*.d.ts",
+        "bin/**/*.js"
     ],
     "scripts": {
         "prepare": "husky install",
         "prebuild": "rimraf dist",
-        "build": "tsc -p src/tsconfig.json",
+        "build": "tsc -p src/tsconfig.json && tsc -p bin/tsconfig.json",
         "test": "jest --coverage"
     },
     "keywords": [
