@@ -3,6 +3,7 @@ import { program } from 'commander'
 import { name, description, version } from '../package.json'
 import { compiler, type jsonSchema } from '../dist'
 import { writeFile } from 'fs/promises'
+import * as path from 'path'
 import chokidar from 'chokidar'
 
 program
@@ -10,14 +11,15 @@ program
     .description(description)
     .version(version)
     .argument('[dir]', 'Path to Shopify project.')
-    .option('-o, --out', 'Template schema output file.')
-    .option('-w, --watch', 'Watch input files.', './template.schema.json')
+    .option('-o, --out <path>', 'Template schema output file.')
+    .option('-w, --watch', 'Watch input files.')
     .action(async (dir: string = '.', options: Options) => {
-        const sectionsDir = dir + '/sections'
-        const schemaFile = dir + options.out
+        const sectionsDir = path.resolve(dir, './sections')
+        const schemaFile =
+            options.out ?? path.resolve(dir, './template.schema.json')
         const schema = await compiler.createTemplateSchema(sectionsDir)
         const writeOut = (schema: jsonSchema.Template) =>
-            writeFile(schemaFile, JSON.stringify(schema))
+            writeFile(schemaFile, JSON.stringify(schema), { flag: 'w' })
         if (options.watch) {
             const log = console.log.bind(console)
             const schemaManager = new compiler.SchemaManager(schema)
@@ -44,7 +46,7 @@ program
                     )
                 })
         } else {
-            writeOut(schema)
+            await writeOut(schema)
         }
     })
 
@@ -52,5 +54,5 @@ program.parse()
 
 interface Options {
     watch: boolean
-    out: string
+    out?: string
 }
