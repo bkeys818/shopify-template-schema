@@ -1,5 +1,17 @@
 import { jsonSchema } from '../../src'
+import { makeTypeFrom } from '../../src/transformer/section'
 import { basicBlock, section, settingShopifySchema } from './utils'
+
+describe(makeTypeFrom, () => {
+    const { fileName, type } = section
+    const filePath = './directory/' + fileName
+    it('extracts type from file name', () => {
+        expect(makeTypeFrom(fileName)).toBe(type)
+    })
+    it('extracts type from file path', () => {
+        expect(makeTypeFrom(filePath)).toBe(type)
+    })
+})
 
 const blocks = ['one', 'two', 'three'].map(basicBlock)
 const settings = [settingShopifySchema]
