@@ -1,76 +1,66 @@
-import { jsonSchema, type shopify } from '../../src'
+import { jsonSchema } from '../../src'
+import { basicBlock, section, settingShopifySchema } from './utils'
 
-const block = (type: string): shopify.BlockSchema => ({
-    type,
-    name: type + ' block',
-})
-
-const sectionType = 'example-section'
-const fileName = sectionType + '.liquid'
-const shopifySchema: shopify.SectionSchema = { name: 'Section Example' }
-const blocks: NonNullable<shopify.SectionSchema['blocks']> = [
-    block('one'),
-    block('two'),
-    block('three'),
-]
-const settings: shopify.SectionSchema['settings'] = [
-    { type: 'number', id: 'number-setting', label: 'number-label' },
-]
+const blocks = ['one', 'two', 'three'].map(basicBlock)
+const settings = [settingShopifySchema]
 
 describe('Section with no schema', () => {
-    const schema = jsonSchema.sectionFrom(fileName)
+    const schema = jsonSchema.sectionFrom(section.fileName)
 
     it("requires 'type'", () => {
-        expect({ type: sectionType }).toMatchSchema(schema)
+        expect({ type: section.type }).toMatchSchema(schema)
         expect({}).not.toMatchSchema(schema)
     })
 })
 
 describe('Basic section', () => {
-    const schema = jsonSchema.sectionFrom(fileName, shopifySchema)
+    const schema = jsonSchema.sectionFrom(
+        section.fileName,
+        section.shopifySchema
+    )
 
     it("requires 'type'", () => {
-        expect({ type: sectionType }).toMatchSchema(schema)
+        expect({ type: section.type }).toMatchSchema(schema)
         expect({}).not.toMatchSchema(schema)
     })
 
     it("won't accept 'settings' or 'blocks'", () => {
-        expect({ type: sectionType, settings: {} }).not.toMatchSchema(schema)
-        expect({ type: sectionType, blocks: {} }).not.toMatchSchema(schema)
+        expect({ type: section.type, settings: {} }).not.toMatchSchema(schema)
+        expect({ type: section.type, blocks: {} }).not.toMatchSchema(schema)
     })
 })
 
 describe('Section with settings', () => {
-    const schema = jsonSchema.sectionFrom(fileName, {
-        ...shopifySchema,
-        settings,
+    const schema = jsonSchema.sectionFrom(section.fileName, {
+        ...section.shopifySchema,
+        settings: [settingShopifySchema],
     })
 
     it("accepts 'settings'", () => {
         expect({
-            type: sectionType,
+            type: section.type,
             settings: { [settings[0].id]: 0 },
         }).toMatchSchema(schema)
     })
 
     it("'settings' is optional", () => {
-        expect({ type: sectionType }).toMatchSchema(schema)
+        expect({ type: section.type }).toMatchSchema(schema)
     })
 
     it("'setting' properties are optional", () => {
-        expect({ type: sectionType, settings: {} }).toMatchSchema(schema)
+        expect({ type: section.type, settings: {} }).toMatchSchema(schema)
     })
 })
 
 describe('Section with blocks', () => {
-    const schema = jsonSchema.sectionFrom(fileName, {
-        ...shopifySchema,
+    const schema = jsonSchema.sectionFrom(section.fileName, {
+        ...section.shopifySchema,
         blocks,
     })
 
     it("accepts only 'blocks' and 'block_order' together", () => {
         const validValue = {
-            type: sectionType,
+            type: section.type,
             blocks: { block1: { type: 'one' }, block2: { type: 'two' } },
             block_order: ['block2', 'block1'],
         }
@@ -87,12 +77,12 @@ describe('Section with blocks', () => {
     })
 
     it("'blocks' and 'block_order' together are optional", () => {
-        expect({ type: sectionType }).toMatchSchema(schema)
+        expect({ type: section.type }).toMatchSchema(schema)
     })
 
     it("'blocks' properties are optional", () => {
         expect({
-            type: sectionType,
+            type: section.type,
             blocks: {},
             block_order: [],
         }).toMatchSchema(schema)
@@ -101,7 +91,7 @@ describe('Section with blocks', () => {
     function createBlocks(n: number) {
         return Object.fromEntries(
             [...Array(n).keys()].map(num => [
-                'block-' + (num + 1).toString(),
+                'basicBlock-' + (num + 1).toString(),
                 { type: blocks[0].type },
             ])
         )
@@ -109,19 +99,19 @@ describe('Section with blocks', () => {
 
     it("custom 'max_blocks' limit", () => {
         const max_blocks = 15
-        const schema = jsonSchema.sectionFrom(fileName, {
-            ...shopifySchema,
+        const schema = jsonSchema.sectionFrom(section.fileName, {
+            ...section.shopifySchema,
             blocks,
             max_blocks,
         })
         const blocksValue = createBlocks(max_blocks)
         const value = {
-            type: sectionType,
+            type: section.type,
             blocks: blocksValue,
             block_order: Object.keys(blocksValue),
         }
         expect(value).toMatchSchema(schema)
-        const newBlockKey = 'block-16'
+        const newBlockKey = 'basicBlock-16'
         blocksValue[newBlockKey] = { type: blocks[0].type }
         value.block_order.push(newBlockKey)
         expect(value).not.toMatchSchema(schema)
@@ -130,12 +120,12 @@ describe('Section with blocks', () => {
     it("default 'max_blocks' limit", () => {
         const blocksValue = createBlocks(16)
         const value = {
-            type: sectionType,
+            type: section.type,
             blocks: blocksValue,
             block_order: Object.keys(blocksValue),
         }
         expect(value).toMatchSchema(schema)
-        const newBlockKey = 'block-17'
+        const newBlockKey = 'basicBlock-17'
         blocksValue[newBlockKey] = { type: blocks[0].type }
         value.block_order.push(newBlockKey)
         expect(value).not.toMatchSchema(schema)

@@ -1,11 +1,5 @@
 import { jsonSchema, type shopify } from '../../src'
-import { validate } from 'json-schema'
-
-const defaultSettings = <T extends shopify.Setting['type']>(type: T) => ({
-    type,
-    id: type + '-setting',
-    label: type + '-setting',
-})
+import { baseSettingFor } from './utils'
 
 export const shopifySchemas: {
     [K in shopify.InputSetting['type']]: [
@@ -14,11 +8,11 @@ export const shopifySchemas: {
         string | boolean | number
     ]
 } = {
-    checkbox: [{ ...defaultSettings('checkbox') }, true, 'invalid-value'],
-    number: [{ ...defaultSettings('number') }, 20, 'invalid-value'],
+    checkbox: [{ ...baseSettingFor('checkbox') }, true, 'invalid-value'],
+    number: [{ ...baseSettingFor('number') }, 20, 'invalid-value'],
     radio: [
         {
-            ...defaultSettings('radio'),
+            ...baseSettingFor('radio'),
             options: [
                 { label: 'radio-option-1', value: 'Radio Option 1' },
                 { label: 'radio-option-2', value: 'Radio Option 2' },
@@ -27,10 +21,10 @@ export const shopifySchemas: {
         'Radio Option 1',
         'invalid-value',
     ],
-    range: [{ ...defaultSettings('range'), min: 0, max: 25, step: 5 }, 20, 16],
+    range: [{ ...baseSettingFor('range'), min: 0, max: 25, step: 5 }, 20, 16],
     select: [
         {
-            ...defaultSettings('select'),
+            ...baseSettingFor('select'),
             options: [
                 { label: 'select-option-1', value: 'Select Option 1' },
                 { label: 'select-option-2', value: 'Select Option 2' },
@@ -39,30 +33,30 @@ export const shopifySchemas: {
         'Select Option 1',
         'invalid-value',
     ],
-    text: [{ ...defaultSettings('text') }, 'text', false],
-    textarea: [{ ...defaultSettings('textarea') }, 'text', false],
-    article: [{ ...defaultSettings('article') }, 'text', false],
-    blog: [{ ...defaultSettings('blog') }, 'text', false],
-    collection: [{ ...defaultSettings('collection') }, 'text', false],
-    collection_list: [{ ...defaultSettings('collection_list') }, 'text', false],
-    color: [{ ...defaultSettings('color') }, 'text', false],
+    text: [{ ...baseSettingFor('text') }, 'text', false],
+    textarea: [{ ...baseSettingFor('textarea') }, 'text', false],
+    article: [{ ...baseSettingFor('article') }, 'text', false],
+    blog: [{ ...baseSettingFor('blog') }, 'text', false],
+    collection: [{ ...baseSettingFor('collection') }, 'text', false],
+    collection_list: [{ ...baseSettingFor('collection_list') }, 'text', false],
+    color: [{ ...baseSettingFor('color') }, 'text', false],
     color_background: [
-        { ...defaultSettings('color_background') },
+        { ...baseSettingFor('color_background') },
         'text',
         false,
     ],
-    font_picker: [{ ...defaultSettings('font_picker') }, 'text', false],
-    html: [{ ...defaultSettings('html') }, 'text', false],
-    image_picker: [{ ...defaultSettings('image_picker') }, 'text', false],
-    link_list: [{ ...defaultSettings('link_list') }, 'text', false],
-    liquid: [{ ...defaultSettings('liquid') }, 'text', false],
-    page: [{ ...defaultSettings('page') }, 'text', false],
-    product: [{ ...defaultSettings('product') }, 'text', false],
-    product_list: [{ ...defaultSettings('product_list') }, 'text', false],
-    richtext: [{ ...defaultSettings('richtext') }, 'text', false],
-    url: [{ ...defaultSettings('url') }, 'text', false],
+    font_picker: [{ ...baseSettingFor('font_picker') }, 'text', false],
+    html: [{ ...baseSettingFor('html') }, 'text', false],
+    image_picker: [{ ...baseSettingFor('image_picker') }, 'text', false],
+    link_list: [{ ...baseSettingFor('link_list') }, 'text', false],
+    liquid: [{ ...baseSettingFor('liquid') }, 'text', false],
+    page: [{ ...baseSettingFor('page') }, 'text', false],
+    product: [{ ...baseSettingFor('product') }, 'text', false],
+    product_list: [{ ...baseSettingFor('product_list') }, 'text', false],
+    richtext: [{ ...baseSettingFor('richtext') }, 'text', false],
+    url: [{ ...baseSettingFor('url') }, 'text', false],
     video_url: [
-        { ...defaultSettings('video_url'), accept: ['vimeo'] },
+        { ...baseSettingFor('video_url'), accept: ['vimeo'] },
         'text',
         false,
     ],
