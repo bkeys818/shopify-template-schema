@@ -1,4 +1,4 @@
-import { jsonSchema, type shopify } from '..'
+import { jsonSchema, type shopify } from '../../src'
 
 const block = (type: string): shopify.BlockSchema => ({
     type,

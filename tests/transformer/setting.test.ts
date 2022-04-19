@@ -1,4 +1,4 @@
-import { jsonSchema, type shopify } from '..'
+import { jsonSchema, type shopify } from '../../src'
 import { validate } from 'json-schema'
 
 const defaultSettings = <T extends shopify.Setting['type']>(type: T) => ({

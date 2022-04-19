@@ -1,4 +1,4 @@
-import { jsonSchema, type shopify } from '..'
+import { jsonSchema, type shopify } from '../../src'
 
 const sectionType = 'example-section'
 const fileName = sectionType + '.liquid'
