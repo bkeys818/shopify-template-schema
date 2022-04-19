@@ -1,18 +1,18 @@
-import { createTemplateSchema, SectionShopifySchema } from '.'
+import { jsonSchema } from '../../src'
+import { section } from './utils'
 
-const sectionType = 'example-section'
-const fileName = sectionType + '.liquid'
-const shopifySchema: SectionShopifySchema = { name: 'Section Example' }
-const schema = createTemplateSchema({ [fileName]: shopifySchema })
+const schema = jsonSchema.templateFrom({
+    [section.fileName]: section.shopifySchema,
+})
 
 test('template with no sections', () => {
     expect(() => {
-        createTemplateSchema({})
+        jsonSchema.templateFrom({})
     }).not.toThrow()
 })
 
 test("requires 'sections' and 'order'", () => {
-    const sections = { section: { type: sectionType } }
+    const sections = { section: { type: section.type } }
     const order = Object.keys(sections)
     expect({ sections, order }).toMatchSchema(schema)
     expect({ sections }).not.toMatchSchema(schema)
@@ -24,12 +24,12 @@ test("default 'sections' limit", () => {
     const sections = Object.fromEntries(
         [...Array(20).keys()].map(num => [
             'section-' + (num + 1).toString(),
-            { type: sectionType },
+            { type: section.type },
         ])
     )
     let order = Object.keys(sections)
     expect({ sections, order }).toMatchSchema(schema)
-    sections['section-21'] = { type: sectionType }
+    sections['section-21'] = { type: section.type }
     order = Object.keys(sections)
     expect({ sections, order }).not.toMatchSchema(schema)
 })
