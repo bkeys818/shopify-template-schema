@@ -35,16 +35,6 @@ export class SchemaManager {
         })
     }
 
-    renameSection(oldFileName: string, newFileName: string) {
-        this.modifySection({
-            fileName: oldFileName,
-            method: 'rename',
-            ifInSchemas: (schemas, i) => {
-                schemas[i].properties.type.const = makeTypeFrom(newFileName)
-            },
-        })
-    }
-
     removeSection(fileName: string) {
         this.modifySection({
             fileName,
