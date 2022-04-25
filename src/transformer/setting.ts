@@ -1,7 +1,7 @@
 import type { jsonSchema, shopify } from '..'
 
 export function settingFrom(
-    shopifySetting: shopify.InputSetting
+    shopifySetting: shopify.schema.InputSetting
 ): jsonSchema.Setting {
     if (shopifySetting.type == 'checkbox') return { type: 'boolean' }
     else if (shopifySetting.type == 'number') return { type: 'number' }

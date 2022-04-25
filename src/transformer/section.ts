@@ -2,7 +2,7 @@ import { jsonSchema, shopify } from '..'
 
 export function sectionFrom(
     fileName: string,
-    shopifySection?: shopify.SectionSchema
+    shopifySection?: shopify.schema.Section
 ): jsonSchema.Section {
     const properties: Section['properties'] = {
         type: { const: makeTypeFrom(fileName) },
@@ -12,7 +12,7 @@ export function sectionFrom(
     if (shopifySection?.settings) {
         const settings: Record<string, jsonSchema.Setting> = {}
         for (const setting of shopifySection.settings) {
-            if (shopify.isInputSetting(setting))
+            if (shopify.schema.isInputSetting(setting))
                 settings[setting.id] = jsonSchema.settingFrom(setting)
         }
         properties.settings = { type: 'object', properties: settings }
