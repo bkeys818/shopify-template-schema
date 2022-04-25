@@ -1,13 +1,15 @@
 import { jsonSchema, shopify } from '..'
 
-export function blockFrom(shopifyBlock: shopify.BlockSchema): jsonSchema.Block {
+export function blockFrom(
+    shopifyBlock: shopify.schema.Block
+): jsonSchema.Block {
     const properties: Block['properties'] = {
         type: { const: shopifyBlock.type },
     }
     if (shopifyBlock.settings) {
         const settings: Record<string, jsonSchema.Setting> = {}
         for (const setting of shopifyBlock.settings) {
-            if (shopify.isInputSetting(setting))
+            if (shopify.schema.isInputSetting(setting))
                 settings[setting.id] = jsonSchema.settingFrom(setting)
         }
         properties.settings = { type: 'object', properties: settings }

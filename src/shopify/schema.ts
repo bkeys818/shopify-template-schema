@@ -1,14 +1,20 @@
-export interface SectionSchema {
+import { shopify } from '..'
+
+export interface Section {
     name: string
     settings?: Setting[]
-    blocks?: BlockSchema[]
+    blocks?: Block[]
     max_blocks?: number
-    presets?: unknown
-    default?: unknown
+    presets?: Array<{
+        name: string
+        settings?: Record<string, shopify.Setting>
+        blocks?: shopify.Block[]
+    }>
+    default?: Pick<shopify.Section, 'settings' | 'blocks'>
     templates?: string[]
 }
 
-export interface BlockSchema {
+export interface Block {
     type: string
     name: string
     limit?: number
@@ -26,7 +32,7 @@ interface SidebarSetting {
     id?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 // prettier-ignore
-export type InputSetting =  | CheckboxSetting | NumberSetting | RadioSetting | RangeSetting | SelectSetting | TextSetting | TextareaSetting | ArticleSetting | BlogSetting | CollectionSetting | CollectionListSetting | ColorSetting | ColorBackgroundSetting | FontPickerSetting | HtmlSetting | ImagePickerSetting | LinkListSetting | LiquidSetting | PageSetting | ProductSetting | ProductListSetting | RichtextSetting | UrlSetting | VideoUrlSetting
+export type InputSetting = CheckboxSetting | NumberSetting | RadioSetting | RangeSetting | SelectSetting | TextSetting | TextareaSetting | ArticleSetting | BlogSetting | CollectionSetting | CollectionListSetting | ColorSetting | ColorBackgroundSetting | FontPickerSetting | HtmlSetting | ImagePickerSetting | LinkListSetting | LiquidSetting | PageSetting | ProductSetting | ProductListSetting | RichtextSetting | UrlSetting | VideoUrlSetting
 interface InputSettingBase {
     type: string
     id: string

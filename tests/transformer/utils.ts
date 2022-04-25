@@ -1,6 +1,8 @@
 import { shopify } from '../../src'
 
-export function baseSettingFor<T extends shopify.Setting['type']>(type: T) {
+export function baseSettingFor<T extends shopify.schema.Setting['type']>(
+    type: T
+) {
     return {
         type,
         id: type + '-setting',
@@ -8,12 +10,13 @@ export function baseSettingFor<T extends shopify.Setting['type']>(type: T) {
     }
 }
 
-export function basicBlock(type: string): shopify.BlockSchema {
+export function basicBlock(type: string): shopify.schema.Block {
     return { type, name: type + ' block' }
 }
 
 export const blockShopifySchema = basicBlock('example')
-export const settingShopifySchema: shopify.Setting = baseSettingFor('number')
+export const settingShopifySchema: shopify.schema.Setting =
+    baseSettingFor('number')
 
 export const section = {
     type: 'example-section',

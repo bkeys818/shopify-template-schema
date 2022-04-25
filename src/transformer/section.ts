@@ -2,17 +2,18 @@ import { jsonSchema, shopify } from '..'
 
 export function sectionFrom(
     fileName: string,
-    shopifySection?: shopify.SectionSchema
+    shopifySection?: shopify.schema.Section
 ): jsonSchema.Section {
+    const type = makeTypeFrom(fileName)
     const properties: Section['properties'] = {
-        type: { const: makeTypeFrom(fileName) },
+        type: { const: type },
         disabled: { type: 'boolean', default: true },
     }
 
     if (shopifySection?.settings) {
         const settings: Record<string, jsonSchema.Setting> = {}
         for (const setting of shopifySection.settings) {
-            if (shopify.isInputSetting(setting))
+            if (shopify.schema.isInputSetting(setting))
                 settings[setting.id] = jsonSchema.settingFrom(setting)
         }
         properties.settings = { type: 'object', properties: settings }
@@ -40,11 +41,36 @@ export function sectionFrom(
         additionalProperties: false,
         required: ['type'],
     }
+
     if (schema.properties?.blocks)
         schema.dependencies = {
             blocks: ['block_order'],
             block_order: ['blocks'],
         }
+
+    if (shopifySection?.default) {
+        schema.default = {
+            type: type,
+            ...shopifySection.default,
+        }
+        if (shopifySection.default.blocks)
+            schema.default.block_order = Object.keys(
+                shopifySection.default.blocks
+            )
+    }
+    if (shopifySection?.presets)
+        schema.defaultSnippets = shopifySection.presets.map(
+            ({ name, settings, blocks }) => {
+                const body: VSCodeSnippet<shopify.Section>['body'] = { type }
+                if (settings) body.settings = settings
+                if (blocks) {
+                    body.blocks = { ...blocks } as any
+                    body.block_order = Object.keys(blocks)
+                }
+                return { label: name, body }
+            }
+        )
+
     return schema
 }
 
@@ -81,4 +107,12 @@ export interface Section {
         blocks: ['block_order']
         block_order: ['blocks']
     }
+    default?: shopify.Section
+    defaultSnippets?: VSCodeSnippet<shopify.Section>[]
+}
+
+interface VSCodeSnippet<T> {
+    label?: string
+    description?: string
+    body: T
 }

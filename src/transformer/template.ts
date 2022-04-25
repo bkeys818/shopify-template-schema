@@ -1,7 +1,7 @@
 import { jsonSchema, shopify } from '..'
 
 export function templateFrom(
-    sections: Record<string, shopify.SectionSchema | undefined>
+    sections: Record<string, shopify.schema.Section | undefined>
 ): Template {
     return {
         type: 'object',

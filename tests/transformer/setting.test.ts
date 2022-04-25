@@ -2,9 +2,11 @@ import { jsonSchema, type shopify } from '../../src'
 import { baseSettingFor } from './utils'
 
 export const shopifySchemas: {
-    [K in shopify.InputSetting['type']]: [
-        Extract<shopify.InputSetting, { type: K }>,
-        NonNullable<Extract<shopify.InputSetting, { type: K }>['default']>,
+    [K in shopify.schema.InputSetting['type']]: [
+        Extract<shopify.schema.InputSetting, { type: K }>,
+        NonNullable<
+            Extract<shopify.schema.InputSetting, { type: K }>['default']
+        >,
         string | boolean | number
     ]
 } = {

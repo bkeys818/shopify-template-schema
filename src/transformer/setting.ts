@@ -1,28 +1,55 @@
 import type { jsonSchema, shopify } from '..'
 
 export function settingFrom(
-    shopifySetting: shopify.InputSetting
+    setting: shopify.schema.InputSetting
 ): jsonSchema.Setting {
-    if (shopifySetting.type == 'checkbox') return { type: 'boolean' }
-    else if (shopifySetting.type == 'number') return { type: 'number' }
-    else if (shopifySetting.type == 'radio' || shopifySetting.type == 'select')
-        return {
-            type: 'string',
-            enum: shopifySetting.options.map(obj => obj.value),
-        }
-    else if (shopifySetting.type == 'range')
-        return {
+    let schema: Setting
+    if (setting.type == 'radio' || setting.type == 'select')
+        schema = { type: 'string', enum: setting.options.map(obj => obj.value) }
+    else if (setting.type == 'range')
+        schema = {
             type: 'number',
-            minimum: shopifySetting.min,
-            maximum: shopifySetting.max,
-            multipleOf: shopifySetting.step,
+            minimum: setting.min,
+            maximum: setting.max,
+            multipleOf: setting.step,
         }
-    else return { type: 'string' }
+    else if (setting.type == 'checkbox') schema = { type: 'boolean' }
+    else if (setting.type == 'number') schema = { type: 'number' }
+    else schema = { type: 'string' }
+    if (setting.default) schema.default = setting.default
+    if (setting.info) schema.description = setting.info
+    return schema
 }
 
 export type Setting =
-    | { type: 'boolean' }
-    | { type: 'number' }
-    | { type: 'number'; minimum: number; maximum: number; multipleOf: number }
-    | { type: 'string' }
-    | { type: 'string'; enum: string[] }
+    | OptionSetting
+    | RangeSetting
+    | BasicSetting<number>
+    | BasicSetting<boolean>
+    | BasicSetting<string>
+
+interface BaseSetting {
+    type: 'string' | 'number' | 'boolean'
+    description?: string
+    default?: unknown
+}
+
+interface RangeSetting extends BaseSetting {
+    type: 'number'
+    minimum: number
+    maximum: number
+    multipleOf: number
+    default?: number
+}
+
+interface OptionSetting extends BaseSetting {
+    type: 'string'
+    enum: string[]
+    default?: string
+}
+
+interface BasicSetting<T extends string | number | boolean>
+    extends BaseSetting {
+    type: T extends string ? 'string' : T extends number ? 'number' : 'boolean'
+    default?: T
+}
