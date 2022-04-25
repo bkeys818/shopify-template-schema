@@ -81,4 +81,12 @@ export interface Section {
         blocks: ['block_order']
         block_order: ['blocks']
     }
+    default?: shopify.Section
+    defaultSnippets?: VSCodeSnippet<shopify.Section>[]
+}
+
+interface VSCodeSnippet<T> {
+    label?: string
+    description?: string
+    body: T
 }

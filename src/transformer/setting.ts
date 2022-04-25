@@ -21,8 +21,34 @@ export function settingFrom(
 }
 
 export type Setting =
-    | { type: 'boolean' }
-    | { type: 'number' }
-    | { type: 'number'; minimum: number; maximum: number; multipleOf: number }
-    | { type: 'string' }
-    | { type: 'string'; enum: string[] }
+    | OptionSetting
+    | RangeSetting
+    | BasicSetting<number>
+    | BasicSetting<boolean>
+    | BasicSetting<string>
+
+interface BaseSetting {
+    type: 'string' | 'number' | 'boolean'
+    description?: string
+    default?: unknown
+}
+
+interface RangeSetting extends BaseSetting {
+    type: 'number'
+    minimum: number
+    maximum: number
+    multipleOf: number
+    default?: number
+}
+
+interface OptionSetting extends BaseSetting {
+    type: 'string'
+    enum: string[]
+    default?: string
+}
+
+interface BasicSetting<T extends string | number | boolean>
+    extends BaseSetting {
+    type: T extends string ? 'string' : T extends number ? 'number' : 'boolean'
+    default?: T
+}
