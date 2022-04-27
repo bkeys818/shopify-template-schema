@@ -18,7 +18,7 @@ export interface Section {
 
 export interface Block {
     type: string
-    settings: Record<string, Setting>
+    settings?: Record<string, Setting>
 }
 
 export type Setting = boolean | number | string
