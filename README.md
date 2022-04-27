@@ -49,9 +49,9 @@ shopify-template-schema -h
 
 <!-- Markdown link & img dfn's -->
 
-[version-image]: https://img.shields.io/github/package-json/v/bkeys818/shopify-template-schema/v0.1.0?label=version
-[version-link]: https://github.com/bkeys818/shopify-template-schema/releases/tag/v0.1.0
+[version-image]: https://img.shields.io/github/package-json/v/bkeys818/shopify-template-schema/v0.1.1?label=version
+[version-link]: https://github.com/bkeys818/shopify-template-schema/releases/tag/v0.1.1
 [npm-downloads]: https://img.shields.io/npm/dm/shopify-template-schema.svg
-[npm-link]: https://www.npmjs.com/package/shopify-template-schema/v/0.1.0
-[test-status]: https://github.com/bkeys818/shopify-template-schema/actions/workflows/run-tests.yaml/badge.svg?branch=v0.1.0
+[npm-link]: https://www.npmjs.com/package/shopify-template-schema/v/0.1.1
+[test-status]: https://github.com/bkeys818/shopify-template-schema/actions/workflows/run-tests.yaml/badge.svg?branch=v0.1.1
 [test-link]: https://github.com/bkeys818/shopify-template-schema/actions/workflows/run-tests.yaml
