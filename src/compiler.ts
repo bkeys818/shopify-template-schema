@@ -40,7 +40,8 @@ export class SchemaManager {
             fileName,
             method: 'rename',
             ifInSchemas: (schemas, i) => {
-                schemas.splice(i, 1)
+                if (schemas.length == 1) this.setSectionSchemas(undefined)
+                else schemas.splice(i, 1)
             },
         })
     }
