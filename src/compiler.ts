@@ -28,9 +28,9 @@ export class SchemaManager {
                 schemas.push(jsonSchema.sectionFrom(filePath, section))
             },
             ifSchemasEmpty: () => {
-                this.sectionSchemas = [
+                this.setSectionSchemas([
                     jsonSchema.sectionFrom(filePath, section),
-                ]
+                ])
             },
         })
     }
@@ -70,25 +70,30 @@ export class SchemaManager {
         throw error
     }
 
-    private get sectionSchemas() {
+    private get sectionSchemas(): SectionSchemas | void {
         const schema =
             this.templateSchema.properties.sections.additionalProperties
         if (schema) {
             return schema.anyOf
         }
     }
-    private set sectionSchemas(value: jsonSchema.Section[] | undefined) {
+    private setSectionSchemas(value: jsonSchema.Section[] | undefined) {
         this.templateSchema.properties.sections.additionalProperties = value
-            ? { anyOf: value }
+            ? jsonSchema.factor.anyOf(value)
             : false
     }
 }
 
+type SectionSchemas = Exclude<
+    jsonSchema.Template['properties']['sections']['additionalProperties'],
+    false
+>['anyOf']
+
 interface ModifyParams {
     fileName: string
     method: 'add' | 'update' | 'rename' | 'remove'
-    ifInSchemas?: (schemas: jsonSchema.Section[], index: number) => void
-    ifNotInSchemas?: (schemas: jsonSchema.Section[]) => void
+    ifInSchemas?: (schemas: SectionSchemas, index: number) => void
+    ifNotInSchemas?: (schemas: SectionSchemas) => void
     ifSchemasEmpty?: () => void
 }
 

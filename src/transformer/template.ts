@@ -16,12 +16,12 @@ export function templateFrom(
                 type: 'object',
                 additionalProperties:
                     Object.keys(sections).length > 0
-                        ? {
-                              anyOf: Object.entries(sections).map(
+                        ? jsonSchema.factor.anyOf(
+                              Object.entries(sections).map(
                                   ([fileName, schema]) =>
                                       jsonSchema.sectionFrom(fileName, schema)
-                              ),
-                          }
+                              )
+                          )
                         : false,
                 maxProperties: 20,
             },
@@ -48,7 +48,9 @@ export interface Template {
         wrapper: { type: 'string' }
         sections: {
             type: 'object'
-            additionalProperties: { anyOf: jsonSchema.Section[] } | false
+            additionalProperties:
+                | jsonSchema.factor.AnyOf<jsonSchema.Section>
+                | false
             maxProperties: 20
         }
         order: {

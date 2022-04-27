@@ -22,9 +22,9 @@ export function sectionFrom(
     if (shopifySection?.blocks) {
         properties.blocks = {
             type: 'object',
-            additionalProperties: {
-                anyOf: shopifySection.blocks.map(jsonSchema.blockFrom),
-            },
+            additionalProperties: jsonSchema.factor.anyOf(
+                shopifySection.blocks.map(jsonSchema.blockFrom)
+            ),
             maxProperties: shopifySection.max_blocks ?? 16,
         }
         properties.block_order = {
@@ -91,7 +91,7 @@ export interface Section {
         }
         blocks?: {
             type: 'object'
-            additionalProperties: { anyOf: jsonSchema.Block[] }
+            additionalProperties: jsonSchema.factor.AnyOf<jsonSchema.Block>
             maxProperties: number
         }
         block_order?: {
