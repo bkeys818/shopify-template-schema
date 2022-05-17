@@ -1,9 +1,14 @@
 import { jsonSchema, shopify } from '..'
 
 export function configFrom(
-    shopifyConfig: shopify.schema.Config
+    shopifyConfig: shopify.schema.Config,
+    templateSchemaPath?: string
 ): jsonSchema.Config {
-    const configProps: Record<string, jsonSchema.Setting> = {}
+    const configProps: Config['definitions']['settings']['properties'] = {}
+    if (templateSchemaPath)
+        configProps.sections = {
+            $ref: `${templateSchemaPath}#/definitions/sections`,
+        }
     for (const setting of shopifyConfig.flatMap(
         section => section.settings ?? []
     )) {
@@ -23,10 +28,7 @@ export function configFrom(
 
 const presets = {
     type: 'object',
-    additionalProperties: {
-        type: 'object',
-        properties: { $ref: '#/definitions/settings' },
-    },
+    additionalProperties: { $ref: '#/definitions/settings' },
 }
 const anyOf = [
     {
@@ -43,12 +45,13 @@ const anyOf = [
         dependencies: { current: ['presets'] },
     },
 ] as const
-
 export interface Config {
     definitions: {
         settings: {
             type: 'object'
-            properties: Record<string, jsonSchema.Setting>
+            properties: Record<string, jsonSchema.Setting> & {
+                sections?: { $ref: `${string}#/definitions/sections` }
+            }
         }
         presets: typeof presets
     }

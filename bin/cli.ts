@@ -27,7 +27,12 @@ program
         const writeOutConfig = async () =>
             await writeFile(
                 configDir + '/settings.schema.json',
-                JSON.stringify(await compiler.createConfigSchema(configSchema)),
+                JSON.stringify(
+                    await compiler.createConfigSchema(
+                        configSchema,
+                        templateSchemaFile
+                    )
+                ),
                 { flag: 'w' }
             )
 
