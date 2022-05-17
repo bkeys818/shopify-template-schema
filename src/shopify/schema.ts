@@ -25,6 +25,13 @@ export function isInputSetting(value: Setting): value is InputSetting {
     return value.type != 'header' && value.type != 'paragraph'
 }
 
+export type Config = Array<{
+    /** The name of the category of settings. */
+    name: string
+    /** An array of associated {@link Setting settings}. */
+    settings: Setting[]
+}>
+
 export type Setting = SidebarSetting | InputSetting
 interface SidebarSetting {
     type: 'header' | 'paragraph'
