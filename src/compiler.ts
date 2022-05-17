@@ -3,6 +3,12 @@ import { makeTypeFrom } from './transformer/section'
 import lexer from './lexer'
 import { readdir, readFile } from 'fs/promises'
 
+export async function createConfigSchema(settingsSchemaPath: string) {
+    return jsonSchema.configFrom(
+        JSON.parse(await readFile(settingsSchemaPath, 'utf8'))
+    )
+}
+
 export async function createTemplateSchema(sectionsDirPath: string) {
     const sections: Parameters<typeof jsonSchema['templateFrom']>[0] = {}
     for (const file of await readdir(sectionsDirPath)) {

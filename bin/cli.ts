@@ -15,14 +15,25 @@ program
     .option('-w, --watch', 'Watch input files.')
     .action(async (dir: string = '.', options: Options) => {
         const sectionsDir = path.resolve(dir, './sections')
-        const schemaFile =
+        const configDir = path.resolve(dir, './config')
+
+        const templateSchemaFile =
             options.out ?? path.resolve(dir, './template.schema.json')
-        const schema = await compiler.createTemplateSchema(sectionsDir)
+        const templateSchema = await compiler.createTemplateSchema(sectionsDir)
         const writeOut = (schema: jsonSchema.Template) =>
-            writeFile(schemaFile, JSON.stringify(schema), { flag: 'w' })
+            writeFile(templateSchemaFile, JSON.stringify(schema), { flag: 'w' })
+
+        const configSchema = configDir + '/settings_schema.json'
+        const writeOutConfig = async () =>
+            await writeFile(
+                configDir + '/settings.schema.json',
+                JSON.stringify(await compiler.createConfigSchema(configSchema)),
+                { flag: 'w' }
+            )
+
         if (options.watch) {
             const log = console.log.bind(console)
-            const schemaManager = new compiler.SchemaManager(schema)
+            const schemaManager = new compiler.SchemaManager(templateSchema)
             await writeOut(schemaManager.templateSchema)
             log(`Template schema created`)
             chokidar
@@ -45,8 +56,14 @@ program
                         console.log(`Removed ${path} to template schema`)
                     )
                 })
+            chokidar
+                .watch(configSchema, {
+                    ignoreInitial: true,
+                })
+                .on('change', () => writeOutConfig())
         } else {
-            await writeOut(schema)
+            await writeOut(templateSchema)
+            await writeOutConfig()
         }
     })
 
