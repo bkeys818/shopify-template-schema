@@ -1,12 +1,15 @@
 import { jsonSchema, shopify } from '..'
 
 export function sectionFrom(
-    fileName: string,
+    filePath: string,
     shopifySection?: shopify.schema.Section
 ): jsonSchema.Section {
-    const type = makeTypeFrom(fileName)
+    const type = makeTypeFrom(filePath)
     const properties: Section['properties'] = {
-        type: { const: type },
+        type: {
+            const: type,
+            markdownDescription: `[${type} schema](${filePath})`,
+        },
         disabled: { type: 'boolean', default: true },
     }
 
@@ -64,7 +67,10 @@ export function sectionFrom(
                 const body: VSCodeSnippet<shopify.Section>['body'] = { type }
                 if (settings) body.settings = settings
                 if (blocks) {
-                    body.blocks = { ...blocks } as any
+                    body.blocks = Object.assign<
+                        typeof body['blocks'],
+                        typeof blocks
+                    >({}, blocks)
                     body.block_order = Object.keys(blocks)
                 }
                 return { label: name, body }
@@ -83,7 +89,10 @@ export function makeTypeFrom(file: string) {
 export interface Section {
     type: 'object'
     properties: {
-        type: { const: string }
+        type: {
+            const: string
+            markdownDescription: string
+        }
         disabled: { type: 'boolean'; default: true }
         settings?: {
             type: 'object'

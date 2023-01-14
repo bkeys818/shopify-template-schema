@@ -18,8 +18,8 @@ export function templateFrom(
                     Object.keys(sections).length > 0
                         ? jsonSchema.factor.anyOf(
                               Object.entries(sections).map(
-                                  ([fileName, schema]) =>
-                                      jsonSchema.sectionFrom(fileName, schema)
+                                  ([filePath, schema]) =>
+                                      jsonSchema.sectionFrom(filePath, schema)
                               )
                           )
                         : false,

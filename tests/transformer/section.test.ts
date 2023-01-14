@@ -3,11 +3,7 @@ import { makeTypeFrom } from '../../src/transformer/section'
 import { basicBlock, section, settingShopifySchema } from './utils'
 
 describe(makeTypeFrom, () => {
-    const { fileName, type } = section
-    const filePath = './directory/' + fileName
-    it('extracts type from file name', () => {
-        expect(makeTypeFrom(fileName)).toBe(type)
-    })
+    const { filePath, type } = section
     it('extracts type from file path', () => {
         expect(makeTypeFrom(filePath)).toBe(type)
     })
@@ -17,7 +13,7 @@ const blocks = ['one', 'two', 'three'].map(basicBlock)
 const settings = [settingShopifySchema]
 
 describe('Section with no schema', () => {
-    const schema = jsonSchema.sectionFrom(section.fileName)
+    const schema = jsonSchema.sectionFrom(section.filePath)
 
     it("requires 'type'", () => {
         expect({ type: section.type }).toMatchSchema(schema)
@@ -27,7 +23,7 @@ describe('Section with no schema', () => {
 
 describe('Basic section', () => {
     const schema = jsonSchema.sectionFrom(
-        section.fileName,
+        section.filePath,
         section.shopifySchema
     )
 
@@ -43,7 +39,7 @@ describe('Basic section', () => {
 })
 
 describe('Section with settings', () => {
-    const schema = jsonSchema.sectionFrom(section.fileName, {
+    const schema = jsonSchema.sectionFrom(section.filePath, {
         ...section.shopifySchema,
         settings: [settingShopifySchema],
     })
@@ -65,7 +61,7 @@ describe('Section with settings', () => {
 })
 
 describe('Section with blocks', () => {
-    const schema = jsonSchema.sectionFrom(section.fileName, {
+    const schema = jsonSchema.sectionFrom(section.filePath, {
         ...section.shopifySchema,
         blocks,
     })
@@ -111,7 +107,7 @@ describe('Section with blocks', () => {
 
     it("custom 'max_blocks' limit", () => {
         const max_blocks = 15
-        const schema = jsonSchema.sectionFrom(section.fileName, {
+        const schema = jsonSchema.sectionFrom(section.filePath, {
             ...section.shopifySchema,
             blocks,
             max_blocks,
