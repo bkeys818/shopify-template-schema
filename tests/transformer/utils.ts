@@ -20,6 +20,6 @@ export const settingShopifySchema: shopify.schema.Setting =
 
 export const section = {
     type: 'example-section',
-    fileName: 'example-section.liquid',
+    filePath: './directory/example-section.liquid',
     shopifySchema: { name: 'Section Example' },
 }

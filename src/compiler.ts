@@ -6,8 +6,9 @@ import { readdir, readFile } from 'fs/promises'
 export async function createTemplateSchema(sectionsDirPath: string) {
     const sections: Parameters<typeof jsonSchema['templateFrom']>[0] = {}
     for (const file of await readdir(sectionsDirPath)) {
-        const content = await readFile(`${sectionsDirPath}/${file}`, 'utf8')
-        sections[file] = lexer(content)
+        const filePath = `${sectionsDirPath}/${file}`
+        const content = await readFile(filePath, 'utf8')
+        sections[filePath] = lexer(content)
     }
     return jsonSchema.templateFrom(sections)
 }
@@ -19,7 +20,7 @@ export class SchemaManager {
     async addSection(filePath: string) {
         const section = lexer(await readFile(filePath, 'utf8'))
         this.modifySection({
-            fileName: filePath,
+            filePath: filePath,
             method: 'add',
             ifInSchemas: (schemas, i) => {
                 schemas[i] = jsonSchema.sectionFrom(filePath, section)
@@ -35,9 +36,9 @@ export class SchemaManager {
         })
     }
 
-    removeSection(fileName: string) {
+    removeSection(filePath: string) {
         this.modifySection({
-            fileName,
+            filePath,
             method: 'rename',
             ifInSchemas: (schemas, i) => {
                 if (schemas.length == 1) this.setSectionSchemas(undefined)
@@ -47,13 +48,13 @@ export class SchemaManager {
     }
 
     private modifySection({
-        fileName,
+        filePath,
         method,
         ifInSchemas,
         ifNotInSchemas,
         ifSchemasEmpty,
     }: ModifyParams) {
-        const type = makeTypeFrom(fileName)
+        const type = makeTypeFrom(filePath)
         if (this.sectionSchemas) {
             const index = this.sectionSchemas.findIndex(
                 schema => schema.properties.type.const === type
@@ -91,7 +92,7 @@ type SectionSchemas = Exclude<
 >['anyOf']
 
 interface ModifyParams {
-    fileName: string
+    filePath: string
     method: 'add' | 'update' | 'rename' | 'remove'
     ifInSchemas?: (schemas: SectionSchemas, index: number) => void
     ifNotInSchemas?: (schemas: SectionSchemas) => void

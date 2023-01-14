@@ -2,7 +2,7 @@ import { jsonSchema } from '../../src'
 import { section } from './utils'
 
 const schema = jsonSchema.templateFrom({
-    [section.fileName]: section.shopifySchema,
+    [section.filePath]: section.shopifySchema,
 })
 
 test('template with no sections', () => {
