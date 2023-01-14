@@ -6,7 +6,10 @@ export function sectionFrom(
 ): jsonSchema.Section {
     const type = makeTypeFrom(filePath)
     const properties: Section['properties'] = {
-        type: { const: type },
+        type: {
+            const: type,
+            markdownDescription: `[${type} schema](${filePath})`,
+        },
         disabled: { type: 'boolean', default: true },
     }
 
@@ -86,7 +89,10 @@ export function makeTypeFrom(file: string) {
 export interface Section {
     type: 'object'
     properties: {
-        type: { const: string }
+        type: {
+            const: string
+            markdownDescription: string
+        }
         disabled: { type: 'boolean'; default: true }
         settings?: {
             type: 'object'
