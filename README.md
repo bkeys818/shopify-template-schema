@@ -26,6 +26,10 @@ If your using [Visual Studio Code](https://code.visualstudio.com) we recommend u
     {
       "fileMatch": ["templates/*.json"],
       "url": "./template.schema.json"
+    },
+    {
+      "fileMatch": ["config/settings_data.json"],
+      "url": "./config/settings.schema.json"
     }
   ]
 }
