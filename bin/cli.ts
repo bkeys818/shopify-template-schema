@@ -2,9 +2,14 @@
 import { program } from 'commander'
 import { name, description, version } from '../package.json'
 import { compiler, type jsonSchema } from '../dist'
-import { writeFile } from 'fs/promises'
+import { writeFile, copyFile } from 'fs/promises'
 import * as path from 'path'
 import chokidar from 'chokidar'
+
+const configSettingsSchemaPath = path.resolve(
+    __filename,
+    '../../static/settings_schema.schema.json'
+)
 
 program
     .name(name)
@@ -36,7 +41,14 @@ program
                 { flag: 'w' }
             )
 
-        await Promise.all([writeOut(templateSchema), writeOutConfig()])
+        await Promise.all([
+            writeOut(templateSchema),
+            writeOutConfig(),
+            copyFile(
+                configSettingsSchemaPath,
+                configDir + '/settings_schema.schema.json'
+            ),
+        ])
 
         if (options.watch) {
             const log = console.log.bind(console)
