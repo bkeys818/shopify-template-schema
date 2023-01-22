@@ -26,7 +26,7 @@ program
         const configSchema = configDir + '/settings_schema.json'
         const writeOutConfig = async () =>
             await writeFile(
-                configDir + '/settings.schema.json',
+                configDir + '/settings_data.schema.json',
                 JSON.stringify(
                     await compiler.createConfigSchema(
                         configSchema,
