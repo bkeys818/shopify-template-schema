@@ -36,11 +36,12 @@ program
                 { flag: 'w' }
             )
 
+        await Promise.all([writeOut(templateSchema), writeOutConfig()])
+
         if (options.watch) {
             const log = console.log.bind(console)
-            const schemaManager = new compiler.SchemaManager(templateSchema)
-            await writeOut(schemaManager.templateSchema)
             log(`Template schema created`)
+            const schemaManager = new compiler.SchemaManager(templateSchema)
             chokidar
                 .watch(sectionsDir + '/*', { ignoreInitial: true })
                 .on('add', async path => {
@@ -66,9 +67,6 @@ program
                     ignoreInitial: true,
                 })
                 .on('change', () => writeOutConfig())
-        } else {
-            await writeOut(templateSchema)
-            await writeOutConfig()
         }
     })
 
