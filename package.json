@@ -6,7 +6,8 @@
     "files": [
         "dist/**/*.js",
         "dist/**/*.d.ts",
-        "bin/**/*.js"
+        "bin/**/*.js",
+        "static"
     ],
     "bin": "bin/cli.js",
     "scripts": {

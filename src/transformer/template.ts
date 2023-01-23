@@ -4,14 +4,7 @@ export function templateFrom(
     sections: Record<string, shopify.schema.Section | undefined>
 ): Template {
     return {
-        type: 'object',
-        properties: {
-            name: { type: 'string' },
-            layout: {
-                anyOf: [{ const: false }, { type: 'string' }],
-                default: 'theme.liquid',
-            },
-            wrapper: { type: 'string' },
+        definitions: {
             sections: {
                 type: 'object',
                 additionalProperties:
@@ -25,6 +18,16 @@ export function templateFrom(
                         : false,
                 maxProperties: 20,
             },
+        },
+        type: 'object',
+        properties: {
+            name: { type: 'string' },
+            layout: {
+                anyOf: [{ const: false }, { type: 'string' }],
+                default: 'theme.liquid',
+            },
+            wrapper: { type: 'string' },
+            sections: { $ref: '#/definitions/sections' },
             order: {
                 type: 'array',
                 items: { type: 'string' },
@@ -38,6 +41,15 @@ export function templateFrom(
 }
 
 export interface Template {
+    definitions: {
+        sections: {
+            type: 'object'
+            additionalProperties:
+                | jsonSchema.factor.AnyOf<jsonSchema.Section>
+                | false
+            maxProperties: 20
+        }
+    }
     type: 'object'
     properties: {
         name: { type: 'string' }
@@ -46,13 +58,7 @@ export interface Template {
             default: 'theme.liquid'
         }
         wrapper: { type: 'string' }
-        sections: {
-            type: 'object'
-            additionalProperties:
-                | jsonSchema.factor.AnyOf<jsonSchema.Section>
-                | false
-            maxProperties: 20
-        }
+        sections: { $ref: '#/definitions/sections' }
         order: {
             type: 'array'
             items: { type: 'string' }

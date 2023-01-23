@@ -3,6 +3,16 @@ import { makeTypeFrom } from './transformer/section'
 import lexer from './lexer'
 import { readdir, readFile } from 'fs/promises'
 
+export async function createConfigSchema(
+    settingsSchemaPath: string,
+    templateSchemaPath?: string
+) {
+    return jsonSchema.configFrom(
+        JSON.parse(await readFile(settingsSchemaPath, 'utf8')),
+        templateSchemaPath
+    )
+}
+
 export async function createTemplateSchema(sectionsDirPath: string) {
     const sections: Parameters<typeof jsonSchema['templateFrom']>[0] = {}
     for (const file of await readdir(sectionsDirPath)) {
@@ -74,20 +84,20 @@ export class SchemaManager {
 
     private get sectionSchemas(): SectionSchemas | void {
         const schema =
-            this.templateSchema.properties.sections.additionalProperties
+            this.templateSchema.definitions.sections.additionalProperties
         if (schema) {
             return schema.anyOf
         }
     }
     private setSectionSchemas(value: jsonSchema.Section[] | undefined) {
-        this.templateSchema.properties.sections.additionalProperties = value
+        this.templateSchema.definitions.sections.additionalProperties = value
             ? jsonSchema.factor.anyOf(value)
             : false
     }
 }
 
 type SectionSchemas = Exclude<
-    jsonSchema.Template['properties']['sections']['additionalProperties'],
+    jsonSchema.Template['definitions']['sections']['additionalProperties'],
     false
 >['anyOf']
 
