@@ -28,8 +28,12 @@ If your using [Visual Studio Code](https://code.visualstudio.com) we recommend u
       "url": "./template.schema.json"
     },
     {
+      "fileMatch": ["config/settings_schema.json"],
+      "url": "./config/settings_schema.schema.json"
+    },
+    {
       "fileMatch": ["config/settings_data.json"],
-      "url": "./config/settings.schema.json"
+      "url": "./config/settings_data.schema.json"
     }
   ]
 }
