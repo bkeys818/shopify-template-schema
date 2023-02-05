@@ -8,4 +8,4 @@ bin/**/*.js
 # jest
 coverage
 
-static/settings_schema.schema.json
+static/*.schema.json
