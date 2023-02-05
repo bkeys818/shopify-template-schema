@@ -30,6 +30,10 @@ If your using [Visual Studio Code](https://code.visualstudio.com) we recommend u
     {
       "fileMatch": ["config/settings_data.json"],
       "url": "./config/settings.schema.json"
+    },
+    {
+      "fileMatch": ["locales/*.json"],
+      "url": "./locale.schema.json"
     }
   ]
 }
