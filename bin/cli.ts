@@ -6,10 +6,8 @@ import { writeFile, copyFile } from 'fs/promises'
 import * as path from 'path'
 import chokidar from 'chokidar'
 
-const configSettingsSchemaPath = path.resolve(
-    __filename,
-    '../../static/settings_schema.schema.json'
-)
+const staticFile = (fileName: string) =>
+    path.resolve(__dirname, '../static/' + fileName)
 
 program
     .name(name)
@@ -45,8 +43,12 @@ program
             writeOut(templateSchema),
             writeOutConfig(),
             copyFile(
-                configSettingsSchemaPath,
+                staticFile('settings_schema.schema.json'),
                 configDir + '/settings_schema.schema.json'
+            ),
+            copyFile(
+                staticFile('locale.schema.json'),
+                path.resolve(dir, './locale.schema.json')
             ),
         ])
 
