@@ -11,6 +11,7 @@ export function sectionFrom(
             markdownDescription: `[${type} schema](${filePath})`,
         },
         disabled: { type: 'boolean', default: true },
+        custom_css: { type: 'array', items: { type: 'string' } },
     }
 
     if (shopifySection?.settings) {
@@ -94,6 +95,7 @@ export interface Section {
             markdownDescription: string
         }
         disabled: { type: 'boolean'; default: true }
+        custom_css: { type: 'array'; items: { type: 'string' } }
         settings?: {
             type: 'object'
             properties: Record<string, jsonSchema.Setting>
