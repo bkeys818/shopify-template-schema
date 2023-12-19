@@ -65,5 +65,5 @@ shopify-template-schema -h
 [version-link]: https://github.com/bkeys818/shopify-template-schema/releases/tag/v0.1.1
 [npm-downloads]: https://img.shields.io/npm/dm/shopify-template-schema.svg
 [npm-link]: https://www.npmjs.com/package/shopify-template-schema/v/0.1.1
-[test-status]: https://github.com/bkeys818/shopify-template-schema/actions/workflows/run-tests.yaml/badge.svg?branch=v0.1.1
+[test-status]: https://github.com/bkeys818/shopify-template-schema/actions/workflows/run-tests.yaml/badge.svg?branch=main
 [test-link]: https://github.com/bkeys818/shopify-template-schema/actions/workflows/run-tests.yaml
